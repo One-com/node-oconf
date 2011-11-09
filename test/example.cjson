@@ -1,0 +1,7 @@
+/*
+ * Example cjson file.
+ */
+{
+	"foo": "bar",
+	"#include": "./default.cjson"
+}

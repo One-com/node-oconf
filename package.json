@@ -1,0 +1,19 @@
+{
+  "author": "Morten Siebuhr <sbhr@sbhr.dk>",
+  "name": "oconf",
+  "description": "Configuration",
+  "version": "0.0.0",
+  "repository": {
+    "url": ""
+  },
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+      "cjson": "*",
+      "optimist": "*"
+  },
+  "devDependencies": {
+      "vows": "*"
+  }
+}
