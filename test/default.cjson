@@ -1,3 +1,4 @@
 {
+	"foo": "overwrite this",
 	"what": "this is from default.cjson."
 }
