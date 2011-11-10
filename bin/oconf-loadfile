@@ -9,4 +9,8 @@ var argv = optimist
             .usage('Usage: $0 <filename.cjson>')
             .argv;
 
-console.dir(loader(argv._[0]));
+try {
+    console.dir(loader(argv._[0]));
+} catch (error) {
+    console.error("Error:", error.message);
+}
