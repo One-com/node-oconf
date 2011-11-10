@@ -1,5 +1,5 @@
 OConf
------
+=====
 
 This is currently a experiment with putting some semi-random ideas about how
 configuration can be done in a convenient manner into code.
@@ -25,4 +25,10 @@ Will result in a config with:
 		"some-setting": "default-value",
 		"value": 50
 	}
+
+License
+-------
+
+The software is provided under the Modified BSD License; See LICENSE for
+further details.
 
