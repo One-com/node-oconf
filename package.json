@@ -6,6 +6,9 @@
   "repository": {
     "url": ""
   },
+  "scripts": {
+    "test": "vows"
+  },
   "engines": {
     "node": "*"
   },
@@ -14,6 +17,7 @@
       "optimist": "*"
   },
   "devDependencies": {
+      "underscore": "*",
       "vows": "*"
   }
 }

@@ -3,5 +3,5 @@
  */
 {
 	"foo": "bar",
-	"#include": "./default.cjson"
+	"#include": "./base.cjson"
 }
