@@ -26,6 +26,11 @@ Will result in a config with:
 		"value": 50
 	}
 
+Tests
+-----
+
+Download/clone, run `npm install --dev` and then either `vows --spec` or `npm test`.
+
 License
 -------
 
