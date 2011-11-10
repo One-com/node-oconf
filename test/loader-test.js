@@ -43,4 +43,30 @@ vows.describe('Loader').addBatch({
             assert.deepEqual(_(res).keys(), ['foo', 'what']);
         }
     }
+}).addBatch({
+    'extend-in-subobject.cjson': {
+        topic: function () {
+            return loader(resolve('./files/extend-in-subobject.cjson'));
+        },
+        'subobject = `contents of extend-base.cjson`': function (res) {
+            assert.deepEqual(
+                res.subobject,
+                {
+                    foo: "bar",
+                    what: "this is from default.cjson."
+                }
+            );
+        }
+    }
+}).addBatch({
+    'loop{1,2}.cjson (files including eachother)': {
+        "throws Error on load": function (res) {
+            assert.throws(
+                function () {
+                    loader(resolve('./files/loop1.cjson'))
+                },
+                Error
+            );
+        }
+    }
 })['export'](module);

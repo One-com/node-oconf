@@ -1,0 +1,5 @@
+// Create loop between two files by including eachother
+{
+	"loop1": true,
+	"#include": "./loop2.cjson"
+}

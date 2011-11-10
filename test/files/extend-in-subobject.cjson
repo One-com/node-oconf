@@ -1,0 +1,6 @@
+// Include an extended object in a sub-object.
+{
+	"subobject": {
+		"#include": "./extend-base.cjson"
+	}
+}
