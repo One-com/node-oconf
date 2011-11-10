@@ -4,8 +4,10 @@
   "description": "Configuration",
   "version": "0.0.0",
   "repository": {
-    "url": ""
+    "type": "git",
+    "url": "https://github.com/msiebuhr/node-oconf.git"
   },
+  "homepage": "https://github.com/msiebuhr/node-oconf",
   "scripts": {
     "test": "vows"
   },
