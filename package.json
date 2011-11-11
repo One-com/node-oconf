@@ -8,6 +8,7 @@
         "url": "https://github.com/msiebuhr/node-oconf.git"
     },
     "homepage": "https://github.com/msiebuhr/node-oconf",
+    "main": "lib/index.js",
     "bin": {
         "oconf-loadfile": "bin/oconf-loadfile"
     },
