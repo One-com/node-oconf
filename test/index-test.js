@@ -6,7 +6,7 @@ var _ = require('underscore'),
     vows = require('vows'),
     assert = require('assert'),
     path = require('path'),
-    loader = require('../lib/loader');
+    oconf = require('../lib/index');
 
 // Helper - resolve files relative to this dir, not vows's CWD.
 function resolve(filename) {
@@ -16,7 +16,7 @@ function resolve(filename) {
 vows.describe('Loader').addBatch({
     'base.cjson': {
         topic: function () {
-            return loader(resolve('./files/base.cjson'));
+            return oconf.load(resolve('./files/base.cjson'));
         },
         'foo = "overwrite this"': function (err, res) {
             assert.deepEqual(res.foo, 'overwrite this');
@@ -31,7 +31,7 @@ vows.describe('Loader').addBatch({
 }).addBatch({
     'extend-base.cjson': {
         topic: function () {
-            return loader(resolve('./files/extend-base.cjson'));
+            return oconf.load(resolve('./files/extend-base.cjson'));
         },
         'foo = "bar" (== is overwritten)': function (res) {
             assert.deepEqual(res.foo, 'bar');
@@ -46,7 +46,7 @@ vows.describe('Loader').addBatch({
 }).addBatch({
     'extend-in-subobject.cjson': {
         topic: function () {
-            return loader(resolve('./files/extend-in-subobject.cjson'));
+            return oconf.load(resolve('./files/extend-in-subobject.cjson'));
         },
         'subobject = `contents of extend-base.cjson`': function (res) {
             assert.deepEqual(
