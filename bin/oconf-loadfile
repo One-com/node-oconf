@@ -2,6 +2,7 @@
 // ex: filetype=javascript
 
 var loader = require('../lib/loader'),
+    sys = require('sys'),
     optimist = require('optimist');
 
 var argv = optimist
@@ -10,7 +11,7 @@ var argv = optimist
             .argv;
 
 try {
-    console.dir(loader(argv._[0]));
+    console.log(sys.inspect(loader(argv._[0], 99, false)));
 } catch (error) {
     console.error("Error:", error.message);
 }
