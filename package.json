@@ -19,8 +19,8 @@
         "node": "*"
     },
     "dependencies": {
-        "cjson": "*",
-        "optimist": "*"
+        "cjson": "= 0.0.6",
+        "optimist": "= 0.2.8"
     },
     "devDependencies": {
         "underscore": "*",
