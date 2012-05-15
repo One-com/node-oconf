@@ -2,7 +2,7 @@
 // ex: filetype=javascript
 
 var oconf = require('../lib/index'),
-    sys = require('sys'),
+    util = require('util'),
     optimist = require('optimist');
 
 var argv = optimist
@@ -11,7 +11,7 @@ var argv = optimist
             .argv;
 
 try {
-    console.log(sys.inspect(oconf.load(argv._[0], 99, false)));
+    console.log(util.inspect(oconf.load(argv._[0], 99, false)));
 } catch (error) {
     console.error("Error:", error.message);
 }
