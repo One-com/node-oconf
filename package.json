@@ -9,6 +9,14 @@
     },
     "homepage": "https://github.com/One-com/node-oconf",
     "main": "lib/index.js",
+    "keywords": [
+        "cjson",
+        "config",
+        "configuration",
+        "include",
+        "inheritance",
+        "json"
+    ],
     "bin": {
         "oconf-loadfile": "bin/oconf-loadfile"
     },
