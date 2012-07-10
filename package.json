@@ -18,7 +18,7 @@
         "json"
     ],
     "bin": {
-        "oconf-loadfile": "bin/oconf-loadfile"
+        "oconf": "bin/oconf"
     },
     "scripts": {
         "test": "vows"
