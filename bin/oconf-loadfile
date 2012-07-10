@@ -11,7 +11,7 @@ var argv = optimist
             .argv;
 
 try {
-    console.log(util.inspect(oconf.load(argv._[0], 99, false)));
+    util.puts(JSON.stringify(oconf.load(argv._[0], 99, false), false, 4));
 } catch (error) {
     console.error("Error:", error.message);
 }
