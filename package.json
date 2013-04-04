@@ -23,9 +23,6 @@
     "scripts": {
         "test": "mocha"
     },
-    "engines": {
-        "node": "*"
-    },
     "dependencies": {
         "cjson": "= 0.0.6",
         "optimist": "= 0.2.8"
