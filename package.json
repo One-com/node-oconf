@@ -21,7 +21,7 @@
         "oconf": "bin/oconf"
     },
     "scripts": {
-        "test": "vows"
+        "test": "mocha"
     },
     "engines": {
         "node": "*"
@@ -31,7 +31,8 @@
         "optimist": "= 0.2.8"
     },
     "devDependencies": {
-        "underscore": "*",
-        "vows": "*"
+        "expect.js": "*",
+        "mocha": "*",
+        "underscore": "*"
     }
 }
