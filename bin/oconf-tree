@@ -23,9 +23,20 @@ var argv = optimist
     .boolean('t', 'b')
     .argv;
 
-function shortestFilename(name) {
-    var rel = path.relative(process.cwd(), name),
-        abs = path.resolve(process.cwd(), name);
+/* shortestFilename([base,] name)
+ */
+function shortestFilename(base, name) {
+    if (arguments.length === 1) {
+        name = base;
+        base = process.cwd();
+    }
+    var rel = path.relative(base, name),
+        abs = path.resolve(base, name);
+
+    // Ensure rel has ./ prefixed if nothing else
+    if (path.basename(rel) === rel) {
+        rel = './' + rel;
+    }
 
     return rel.length > abs.length ? abs : rel;
 }
@@ -108,10 +119,14 @@ while(filesToLookAt.length > 0) {
 
 
 // OUTPUT
-function printTree(indent, branch, childLookup) {
-    console.log("%s%s", Array(indent).join(" "), branch)
+function printTree(indent, branch, parentPath, childLookup) {
+    console.log(
+        "%s%s",
+        Array(indent).join(" "),
+        shortestFilename(parentPath, branch)
+    )
     childLookup(branch).sort().forEach(function (child) {
-        printTree(indent + 2, child, childLookup);
+        printTree(indent + 2, child, path.dirname(branch), childLookup);
     });
 }
 
@@ -121,7 +136,7 @@ if (argv['reverse']) {
     filesLookedAt.filter(function (filename) {
         return !(filename in includes);
     }).sort().forEach(function (filename) {
-        printTree(1, filename, function (branch) {
+        printTree(1, filename, process.cwd(), function (branch) {
             return included[branch] || [];
         });
     });
@@ -131,7 +146,7 @@ if (argv['reverse']) {
     filesLookedAt.filter(function (filename) {
         return !(filename in included);
     }).sort().forEach(function (filename) {
-        printTree(1, filename, function (branch) {
+        printTree(1, filename, process.cwd(), function (branch) {
             return includes[branch] || [];
         });
     });
