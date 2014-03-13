@@ -10,10 +10,10 @@ var oconf = require('../lib/index'),
 var argv = optimist
     .demand(1)
     .usage('$0 <filename.cjson ...>')
-    .options('b', {
-        alias: 'bottom-up',
+    .options('r', {
+        alias: 'reverse',
         default: false,
-        description: 'Show from the root up'
+        description: 'Start at the root (needs to include all files on command-line)'
     })
     /*.options('t', {
         alias: 'top-down',
@@ -47,11 +47,6 @@ function discoverIncludes(obj, currentFile, loadedFiles) {
                 includes.push(n);
             });
         });
-        /*
-        includes = obj.map(function (element) {
-            return discoverIncludes(element, currentFile, loadedFiles);
-        });
-        */
     } else if (typeof obj === 'object' && obj !== null) {
         // If there's any data to mix in, we do that.
         if (obj['#include'] !== undefined) {
@@ -120,8 +115,8 @@ function printTree(indent, branch, childLookup) {
     });
 }
 
-// Print bottom-up tree
-if (argv['bottom-up']) {
+// Print reversen tree
+if (argv['reverse']) {
     //console.log(included)
     filesLookedAt.filter(function (filename) {
         return !(filename in includes);
