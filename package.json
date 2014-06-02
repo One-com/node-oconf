@@ -1,35 +1,35 @@
 {
-    "author": "Morten Siebuhr <sbhr@sbhr.dk>",
-    "name": "oconf",
-    "description": "Configuration",
-    "version": "0.0.9",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/One-com/node-oconf.git"
-    },
-    "homepage": "https://github.com/One-com/node-oconf",
-    "main": "lib/index.js",
-    "keywords": [
-        "cjson",
-        "config",
-        "configuration",
-        "include",
-        "inheritance",
-        "json"
-    ],
-    "bin": {
-        "oconf": "bin/oconf"
-    },
-    "scripts": {
-        "test": "mocha"
-    },
-    "dependencies": {
-        "cjson": "= 0.0.6",
-        "optimist": "= 0.2.8",
-        "underscore": "*"
-    },
-    "devDependencies": {
-        "expect.js": "*",
-        "mocha": "*"
-    }
+  "author": "Morten Siebuhr <sbhr@sbhr.dk>",
+  "name": "oconf",
+  "description": "Configuration",
+  "version": "0.0.10",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/One-com/node-oconf.git"
+  },
+  "homepage": "https://github.com/One-com/node-oconf",
+  "main": "lib/index.js",
+  "keywords": [
+    "cjson",
+    "config",
+    "configuration",
+    "include",
+    "inheritance",
+    "json"
+  ],
+  "bin": {
+    "oconf": "bin/oconf"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "cjson": "= 0.0.6",
+    "optimist": "= 0.2.8",
+    "underscore": "*"
+  },
+  "devDependencies": {
+    "expect.js": "*",
+    "mocha": "*"
+  }
 }
