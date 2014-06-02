@@ -3,6 +3,7 @@
 
 var oconf = require('../lib/index'),
     util = require('util'),
+    _ = require('underscore'),
     optimist = require('optimist');
 
 var argv = optimist
@@ -11,7 +12,16 @@ var argv = optimist
             .argv;
 
 try {
-    util.puts(JSON.stringify(oconf.load(argv._[0], 99, false), false, 4));
+    var args = argv._.splice(1),
+        config = oconf.load(argv._[0], 99, false);
+
+    _.flatten(args.map(function (item) {
+        return item.split('.');
+    })).forEach(function (arg) {
+        config = config[arg];
+    });
+
+    util.puts(JSON.stringify(config, false, 4));
 } catch (error) {
     console.error("Error:", error.message);
 }
