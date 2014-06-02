@@ -7,8 +7,12 @@ var oconf = require('../lib/index'),
     optimist = require('optimist');
 
 var argv = optimist
+            .option('lint', {
+                type: 'boolean',
+                default: false
+            })
             .demand(1)
-            .usage('Usage: $0 <filename.cjson>')
+            .usage('Usage: $0 [--lint] <filename.cjson>')
             .argv;
 
 try {
@@ -21,7 +25,9 @@ try {
         config = config[arg];
     });
 
-    util.puts(JSON.stringify(config, false, 4));
+    if (!argv.lint) {
+        util.puts(JSON.stringify(config, false, 4));
+    }
 } catch (error) {
     console.error("Error:", error.message);
     process.exit(1);
