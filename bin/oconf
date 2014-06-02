@@ -24,4 +24,5 @@ try {
     util.puts(JSON.stringify(config, false, 4));
 } catch (error) {
     console.error("Error:", error.message);
+    process.exit(1);
 }
