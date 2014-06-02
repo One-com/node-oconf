@@ -4,20 +4,21 @@
 var oconf = require('../lib/index'),
     util = require('util'),
     _ = require('underscore'),
-    optimist = require('optimist');
-
-var argv = optimist
-            .option('lint', {
-                type: 'boolean',
-                default: false
-            })
-            .demand(1)
-            .usage('Usage: $0 [--lint] <filename.cjson>')
-            .argv;
+    argv = require('optimist')
+        .option('lint', {
+            type: 'boolean',
+            default: false
+        })
+        .option('ignore', {
+            type: 'string'
+        })
+        .demand(1)
+        .usage('Usage: $0 [--lint] <filename.cjson>')
+        .argv;
 
 try {
     var args = argv._.splice(1),
-        config = oconf.load(argv._[0], 99, false);
+        config = oconf.load(argv._[0], {ignore: argv.ignore});
 
     _.flatten(args.map(function (item) {
         return item.split('.');
