@@ -98,4 +98,18 @@ describe('Basic tests', function () {
                 .to.throwError();
         });
     });
+
+    describe('includeNonExistentFile.cjson', function () {
+        it('should throw an error when nonExistentFile.cjson is not ignored', function () {
+            expect(function () {
+                oconf.load(resolve('./files/includeNonExistentFile.cjson'));
+            }).to.throwError();
+        });
+
+        it('should not throw an error when nonExistentFile.cjson is ignored', function () {
+            expect(function () {
+                oconf.load(resolve('./files/includeNonExistentFile.cjson'), {ignore: resolve('./files/nonExistentFile.cjson')});
+            }).not.to.throwError();
+        });
+    });
 });

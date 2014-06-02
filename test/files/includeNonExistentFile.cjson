@@ -1,0 +1,4 @@
+{
+    "#include": "nonExistentFile.cjson",
+    "foo": 123
+}
