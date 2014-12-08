@@ -12,6 +12,9 @@ var oconf = require('../lib/index'),
         .option('ignore', {
             type: 'string'
         })
+        .option('bare', {
+            type: 'boolean'
+        })
         .demand(1)
         .usage('Usage: $0 [--lint] <filename.cjson>')
         .argv;
@@ -27,7 +30,17 @@ try {
     });
 
     if (!argv.lint) {
-        util.puts(JSON.stringify(config, false, 4));
+        if (argv.bare) {
+            if (Array.isArray(config)) {
+                util.puts(config.join(' '));
+            } else if (typeof config === 'object' && config) {
+                util.puts(JSON.stringify(config));
+        } else {
+                util.puts(config);
+            }
+        } else {
+            util.puts(JSON.stringify(config, false, 4));
+        }
     }
 } catch (error) {
     console.error("Error:", error.message);
