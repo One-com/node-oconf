@@ -16,16 +16,21 @@ var oconf = require('../lib/index'),
             type: 'boolean'
         })
         .demand(1)
-        .usage('Usage: $0 [--lint] <filename.cjson>')
+        .usage('Usage: $0 [--lint] <filename.cjson> [path.to.value...]')
         .argv;
 
 try {
     var args = argv._.splice(1),
-        config = oconf.load(argv._[0], {ignore: argv.ignore});
+        config = oconf.load(argv._[0], {ignore: argv.ignore}),
+        // Normalize oconf ... foo.bar quux => ['foo', 'bar', 'quux']
+        pathToValue = _.flatten(args.map(function (item) {
+            return item.split('.');
+        }));
 
-    _.flatten(args.map(function (item) {
-        return item.split('.');
-    })).forEach(function (arg) {
+    pathToValue.forEach(function (arg) {
+        if (!config || typeof config !== 'object' || !(arg in config)) {
+            throw new Error('No such value: ' + pathToValue.join('.'));
+        }
         config = config[arg];
     });
 
