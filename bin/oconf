@@ -15,8 +15,11 @@ var oconf = require('../lib/index'),
         .option('bare', {
             type: 'boolean'
         })
+        .option('allowmissing', {
+            type: 'boolean'
+        })
         .demand(1)
-        .usage('Usage: $0 [--lint] <filename.cjson> [path.to.value...]')
+        .usage('Usage: $0 [--lint] [--bare] [--allowmissing] [--ignore <filename>] <filename.cjson> [path.to.value...]')
         .argv;
 
 try {
@@ -29,7 +32,11 @@ try {
 
     pathToValue.forEach(function (arg) {
         if (!config || typeof config !== 'object' || !(arg in config)) {
-            throw new Error('No such value: ' + pathToValue.join('.'));
+            if (argv.allowmissing) {
+                process.exit(0);
+            } else {
+                throw new Error('No such value: ' + pathToValue.join('.'));
+            }
         }
         config = config[arg];
     });
