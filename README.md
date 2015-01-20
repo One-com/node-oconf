@@ -1,6 +1,8 @@
 OConf
 =====
 
+[![Build Status](https://travis-ci.org/One-com/node-oconf.svg)](https://travis-ci.org/One-com/node-oconf)
+
 Load cjson (JSON + c-style) commentaries, with inheritance-sugar on top:
 
     > var oconf = require('oconf');
@@ -68,4 +70,3 @@ License
 
 The software is provided under the Modified BSD License; See LICENSE for
 further details.
-
