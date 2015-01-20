@@ -52,7 +52,7 @@ describe('Basic tests', function () {
             });
         });
     });
-    describe('extend-multiple.json', function () {
+    describe('extend-multiple.cjson', function () {
         var data;
         before(function () {
             data = oconf.load(resolve('./files/extend-multiple.cjson'));
