@@ -52,6 +52,18 @@ describe('Basic tests', function () {
             });
         });
     });
+    describe('extend-multiple.json', function () {
+        var data;
+        before(function () {
+            data = oconf.load(resolve('./files/extend-multiple.cjson'));
+        });
+        it('should have properties from both extended files', function () {
+            expect(data, 'to equal', {
+                foo: 'bar',
+                bar: 'foo'
+            });
+        });
+    });
     describe('loop1.cjson / loop2.cjson', function () {
         it('Loading loop1.cjson throws error', function () {
             expect(function () {

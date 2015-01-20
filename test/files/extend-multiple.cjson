@@ -1,0 +1,3 @@
+{
+    "#include": [ "extend-multiple-1.cjson", "extend-multiple-2.cjson" ]
+}
