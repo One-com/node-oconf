@@ -21,7 +21,7 @@
     "oconf": "bin/oconf"
   },
   "scripts": {
-    "coverage": "istanbul cover _mocha",
+    "coverage": "istanbul cover _mocha --include-all-sources",
     "test": "mocha"
   },
   "dependencies": {
