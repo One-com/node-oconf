@@ -76,4 +76,31 @@ describe('Basic tests', function () {
             }, 'not to throw');
         });
     });
+    describe('ignore included files with globbing', function () {
+        it('should not throw an error when ignoring by glob #1', function () {
+            expect(function () {
+                oconf.load(resolve('./files/includeNonExistentFile.cjson'), { ignore: '**/*.cjson' });
+            }, 'not to throw');
+        });
+        it('should not throw an error when ignoring by glob #2', function () {
+            expect(function () {
+                oconf.load(resolve('./files/includeNonExistentFile.cjson'), { ignore: resolve('./**') });
+            }, 'not to throw');
+        });
+        it('should not throw an error when ignoring by glob #3', function () {
+            expect(function () {
+                oconf.load(resolve('./files/includeNonExistentFile.cjson'), { ignore: resolve('./files/*') });
+            }, 'not to throw');
+        });
+        it('should not throw an error when ignoring by glob #4', function () {
+            expect(function () {
+                oconf.load(resolve('./files/includeNonExistentFile.cjson'), { ignore: 'files/*.cjson', cwd: __dirname });
+            }, 'not to throw');
+        });
+        it('should throw an error when ignoring by glob but including file not matched by glob', function () {
+            expect(function () {
+                oconf.load(resolve('./files/includeNonExistentFile.cjson'), { ignore: resolve('./otherfiles/*.cjson') });
+            }, 'to throw', /^ENOENT, no such file or directory/);
+        });
+    });
 });
