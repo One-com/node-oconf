@@ -21,6 +21,7 @@
     "oconf": "bin/oconf"
   },
   "scripts": {
+    "coverage": "istanbul cover _mocha",
     "test": "mocha"
   },
   "dependencies": {
@@ -29,6 +30,7 @@
     "underscore": "*"
   },
   "devDependencies": {
+    "istanbul": "0.3.5",
     "mocha": "*",
     "unexpected": "5.5.2"
   }
