@@ -87,9 +87,14 @@ describe('Basic tests', function () {
                 oconf.load(resolve('./files/includeNonExistentFile.cjson'), { ignore: resolve('./**') });
             }, 'not to throw');
         });
-        it('should not throw an error when ignoring by glob', function () {
+        it('should not throw an error when ignoring by glob #3', function () {
             expect(function () {
                 oconf.load(resolve('./files/includeNonExistentFile.cjson'), { ignore: resolve('./files/*') });
+            }, 'not to throw');
+        });
+        it('should not throw an error when ignoring by glob #4', function () {
+            expect(function () {
+                oconf.load(resolve('./files/includeNonExistentFile.cjson'), { ignore: 'files/*.cjson', cwd: __dirname });
             }, 'not to throw');
         });
         it('should throw an error when ignoring by glob but including file not matched by glob', function () {
