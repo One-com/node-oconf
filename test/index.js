@@ -1,9 +1,9 @@
+/*global describe, it, before*/
 /*
  * Test the loader
  */
 
-var _ = require('underscore'),
-    expect = require('expect.js'),
+var expect = require('expect.js'),
     oconf = require('../lib/index'),
     path = require('path');
 
@@ -24,7 +24,7 @@ describe('Basic tests', function () {
 
         it('Has foo = "overwrite this"', function () {
             expect(data).to.have.property('foo', 'overwrite this');
-        })
+        });
 
         it('Has what = "this is from default.cjson."', function () {
             expect(data).to.have.property('what', 'this is from default.cjson.');
@@ -45,7 +45,7 @@ describe('Basic tests', function () {
 
         it('Has foo = "bar" (i.e. overwritten)', function () {
             expect(data).to.have.property('foo', 'bar');
-        })
+        });
 
         it('Has what = "this is from default.cjson."', function () {
             expect(data).to.have.property('what', 'this is from default.cjson.');
@@ -83,7 +83,7 @@ describe('Basic tests', function () {
             expect(data)
                 .to.have.property('subobject')
                 .eql({ foo: 'bar', what: 'this is from default.cjson.' });
-        })
+        });
     });
 
     describe('loop1.cjson / loop2.cjson', function () {
