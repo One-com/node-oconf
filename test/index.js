@@ -3,7 +3,7 @@
  * Test the loader
  */
 
-var expect = require('expect.js'),
+var expect = require('unexpected'),
     oconf = require('../lib/index'),
     path = require('path');
 
@@ -23,15 +23,15 @@ describe('Basic tests', function () {
         });
 
         it('Has foo = "overwrite this"', function () {
-            expect(data).to.have.property('foo', 'overwrite this');
+            expect(data, 'to have property', 'foo', 'overwrite this');
         });
 
         it('Has what = "this is from default.cjson."', function () {
-            expect(data).to.have.property('what', 'this is from default.cjson.');
+            expect(data, 'to have property', 'what', 'this is from default.cjson.');
         });
 
         it('Only has "foo" and "what"-keys', function () {
-            expect(data).to.only.have.keys(['foo', 'what']);
+            expect(data, 'to only have keys', ['foo', 'what']);
         });
 
     });
@@ -44,15 +44,15 @@ describe('Basic tests', function () {
         });
 
         it('Has foo = "bar" (i.e. overwritten)', function () {
-            expect(data).to.have.property('foo', 'bar');
+            expect(data, 'to have property', 'foo', 'bar');
         });
 
         it('Has what = "this is from default.cjson."', function () {
-            expect(data).to.have.property('what', 'this is from default.cjson.');
+            expect(data, 'to have property', 'what', 'this is from default.cjson.');
         });
 
         it('Only has "foo" and "what"-keys', function () {
-            expect(data).to.only.have.keys(['foo', 'what']);
+            expect(data, 'to only have keys', ['foo', 'what']);
         });
 
     });
@@ -80,22 +80,27 @@ describe('Basic tests', function () {
         });
 
         it('Has subobject = contents of extend-base.cjson', function () {
-            expect(data)
-                .to.have.property('subobject')
-                .eql({ foo: 'bar', what: 'this is from default.cjson.' });
+            expect(data, 'to equal', {
+                'subobject': {
+                    'foo': 'bar',
+                    'what': 'this is from default.cjson.'
+                }
+            });
         });
     });
 
     describe('loop1.cjson / loop2.cjson', function () {
 
         it('Loading loop1.cjson throws error', function () {
-            expect(function () { loader(resolve('./files/loop1.cjson')); })
-                .to.throwError();
+            expect(function () {
+                oconf.load(resolve('./files/loop1.cjson'));
+            }, 'to throw', /^Loop in loaded files: /);
         });
 
         it('Loading loop2.cjson throws error', function () {
-            expect(function () { loader(resolve('./files/loop2.cjson')); })
-                .to.throwError();
+            expect(function () {
+                oconf.load(resolve('./files/loop2.cjson'));
+            }, 'to throw', /^Loop in loaded files:/);
         });
     });
 
@@ -103,13 +108,13 @@ describe('Basic tests', function () {
         it('should throw an error when nonExistentFile.cjson is not ignored', function () {
             expect(function () {
                 oconf.load(resolve('./files/includeNonExistentFile.cjson'));
-            }).to.throwError();
+            }, 'to throw', /^ENOENT, no such file or directory/);
         });
 
         it('should not throw an error when nonExistentFile.cjson is ignored', function () {
             expect(function () {
                 oconf.load(resolve('./files/includeNonExistentFile.cjson'), {ignore: resolve('./files/nonExistentFile.cjson')});
-            }).not.to.throwError();
+            }, 'not to throw');
         });
     });
 });

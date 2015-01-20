@@ -29,7 +29,7 @@
     "underscore": "*"
   },
   "devDependencies": {
-    "expect.js": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "unexpected": "5.5.2"
   }
 }
