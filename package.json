@@ -21,7 +21,7 @@
     "oconf": "bin/oconf"
   },
   "scripts": {
-    "coverage": "NODE_ENV=development istanbul cover -x --include-all-sources _mocha -- --reporter dot",
+    "coverage": "NODE_ENV=development istanbul cover --include-all-sources _mocha -- --reporter dot",
     "lint": "jshint . && jscs .",
     "test": "mocha",
     "travis": "npm run lint && npm run test && npm run coverage"
