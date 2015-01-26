@@ -64,6 +64,19 @@ describe('Basic tests', function () {
             });
         });
     });
+    describe('extend-nested.cjson', function () {
+        var data;
+        before(function () {
+            data = oconf.load(resolve('./files/extend-nested.cjson'));
+        });
+        it('should have properties from both extended files', function () {
+            expect(data, 'to equal', {
+                foo: 'foo',
+                bar: 'bar',
+                baz: 'baz'
+            });
+        });
+    });
     describe('list-of-includes.cjson', function () {
         var data;
         before(function () {

@@ -1,0 +1,4 @@
+{
+  "#include": "extend-nested-1.cjson",
+  "foo": "foo"
+}
