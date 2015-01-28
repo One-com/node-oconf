@@ -1,7 +1,6 @@
 /*global describe, it, before*/
-var expect = require('unexpected'),
-    oconf = require('../../lib/index'),
-    path = require('path');
+var expect = require('unexpected');
+var oconf = require('../../lib/index');
 
 function testFile(filename) {
     return require('path').resolve(__dirname, '..', 'files', filename);
