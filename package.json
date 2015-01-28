@@ -18,7 +18,7 @@
     "json"
   ],
   "bin": {
-    "oconf": "bin/oconf"
+    "oconf": "bin/oconf.js"
   },
   "scripts": {
     "coverage": "NODE_ENV=development istanbul cover --include-all-sources _mocha -- --reporter dot",
