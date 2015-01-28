@@ -18,7 +18,8 @@
     "json"
   ],
   "bin": {
-    "oconf": "bin/oconf.js"
+    "oconf": "bin/oconf.js",
+    "oconf-extract-option": "bin/oconf-extract-option.js"
   },
   "scripts": {
     "coverage": "NODE_ENV=development istanbul cover --include-all-sources _mocha -- --reporter dot",
