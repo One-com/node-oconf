@@ -49,7 +49,7 @@ function _getKey(keyname, testObj) {
 
     // We're at the end.
     return testObj[key];
-};
+}
 
 try {
     var data = oconf.load(argv._[0], 99, false);
