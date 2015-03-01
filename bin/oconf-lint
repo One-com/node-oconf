@@ -22,7 +22,7 @@ var files = argv._.map(function (path) {
 
 require('async').eachSeries(files, require('../lib/lint'), function (err) {
     if (err) {
-        console.error(err.file, '\n');
+        console.error(err.file + '\n');
         console.error(err.message);
         process.exit(1);
     } else {
