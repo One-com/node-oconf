@@ -37,6 +37,15 @@ try {
             return item.split('.');
         }));
 
+    if (pathToValue.length > 0) {
+        console.warn(
+            'Usage of oconf to print configuration values like below, is deprecated.',
+            'For example: "oconf file.cjson path.to.value".',
+            'In version 3.0.0 it will be removed. You can use oconf-extract-option instead.\n'
+        );
+    }
+
+
     pathToValue.forEach(function (arg) {
         if (!config || typeof config !== 'object' || !(arg in config)) {
             if (argv.allowmissing) {
