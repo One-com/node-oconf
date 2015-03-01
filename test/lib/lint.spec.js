@@ -37,4 +37,21 @@ describe('lib/lint', function () {
             done();
         });
     });
+    describe('should be able to lint a directory', function () {
+        it('should not complain if no invalid files are found', function (done) {
+            lint(testData('validDirectory'), function (err) {
+                expect(err, 'to be undefined');
+                done();
+            });
+        });
+        it('should complain if at least one file is invalid', function (done) {
+            lint(testData('invalidDirectory'), function (err) {
+                expect(err, 'to satisfy', {
+                    message: /^Parse error on line 2:/,
+                    file: /invalidDirectory\/2.cjson$/
+                });
+                done();
+            });
+        });
+    });
 });
