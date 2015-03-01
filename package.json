@@ -7,6 +7,10 @@
     "type": "git",
     "url": "https://github.com/One-com/node-oconf.git"
   },
+  "contributors": [
+    "Andreas Lind <andreas@one.com>",
+    "Gustav Nikolaj Olsen <gno@one.com>"
+  ],
   "homepage": "https://github.com/One-com/node-oconf",
   "main": "lib/index.js",
   "keywords": [
