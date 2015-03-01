@@ -22,6 +22,13 @@ var oconf = require('../lib/index'),
         .usage('Usage: $0 [--lint] [--bare] [--allowmissing] [--ignore <filename>] <filename.cjson> [path.to.value...]')
         .argv;
 
+if (argv.lint) {
+    console.warn(
+        'The option --lint is deprecated and will be replaced by',
+        'a standalone binary with release 3.0.0 of oconf.'
+    );
+}
+
 try {
     var args = argv._.splice(1),
         config = oconf.load(argv._[0], {ignore: argv.ignore}),
