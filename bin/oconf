@@ -28,7 +28,7 @@ var argv = argp.argv;
 
 // This is needed as optimist will not force exit when --help is
 // passed on it's own, and we want it to.
-if (argv.h) {
+if (argv.help) {
     argp.showHelp();
     process.exit(0);
 }

@@ -23,7 +23,9 @@ var argp = optimist
     .usage('Usage: $0 <filename.cjson> <dotted.option.path>');
 var argv = argp.argv;
 
-if (argv.h) {
+// This is needed as optimist will not force exit when --help is
+// passed on it's own, and we want it to.
+if (argv.help) {
     argp.showHelp();
     process.exit();
 }
