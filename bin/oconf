@@ -3,13 +3,19 @@
 
 var oconf = require('../lib/index'),
     util = require('util'),
-    argv = require('optimist')
+    argp = require('optimist')
         // TODO: Remove this option in v4.
         .option('lint', {
             type: 'boolean'
         })
         .option('ignore', {
-            type: 'string'
+            alias: 'i',
+            type: 'string',
+            description: 'Absolute path or glob pattern for ignoring included files.'
+        })
+        .options('help', {
+            alias: 'h',
+            description: 'This help text.'
         })
         // TODO: Remove this option in v4.
         .option('bare', {
@@ -20,8 +26,15 @@ var oconf = require('../lib/index'),
             type: 'boolean'
         })
         .demand(1)
-        .usage('Usage: $0 [--ignore <filename>] <filename.cjson>')
-        .argv;
+        .usage('Usage: $0 [--ignore <path>] <filename.cjson>'),
+    argv = argp.argv;
+
+// This is needed as optimist will not force exit when --help is
+// passed on it's own, and we want it to.
+if (argv.h) {
+    argp.showHelp();
+    process.exit(0);
+}
 
 // TODO: Remove this check for the lint option in v4.
 if (argv.lint) {
