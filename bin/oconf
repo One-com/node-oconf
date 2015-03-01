@@ -31,19 +31,14 @@ if (argv.lint) {
 }
 
 try {
-    var args = argv._.splice(1),
-        config = oconf.load(argv._[0], {ignore: argv.ignore}),
-        // Normalize oconf ... foo.bar quux => ['foo', 'bar', 'quux']
-        pathToValue = _.flatten(args.map(function (item) {
-            return item.split('.');
-        }));
+    var config = oconf.load(argv._[0], {ignore: argv.ignore}),
+        pathToValue = argv._.splice(1);
 
     // TODO: Remove this check in v4.
     if (argv.allowmissing || argv.bare || pathToValue.length > 0) {
         console.warn('oconf no longer supports extracting values this way. Use oconf-extract-option instead.');
         process.exit(1);
     }
-
 
     util.puts(JSON.stringify(config, false, 4));
 } catch (error) {
