@@ -15,6 +15,10 @@ var argp = optimist
                 alias: 'help',
                 default: false,
             })
+            .option('allowmissing', {
+                type: 'boolean',
+                default: false
+            })
             .boolean(['j', 'h'])
             .demand(1)
             .usage('Usage: $0 <filename.cjson> <dotted.option.path>');
@@ -39,6 +43,9 @@ function _getKey(keyname, testObj) {
 
     // Is it an object -- and does it have the key
     if (testObj !== new Object(testObj) || !(key in testObj)) {
+        if (argv.allowmissing) {
+            process.exit(0);
+        }
         throw new Error('Key ' + key + ' not found in ' + JSON.stringify(testObj));
     }
 
