@@ -5,20 +5,20 @@ var oconf = require('../lib/index');
 var util = require('util');
 var optimist = require('optimist');
 var argp = optimist
-    .options('j', {
-        alias: 'json',
-        default: false,
+    .option('json', {
+        alias: 'j',
+        type: 'boolean',
         description: 'Force JSON output'
     })
-    .options('h', {
-        alias: 'help',
-        default: false,
+    .option('help', {
+        alias: 'h',
+        type: 'boolean',
+        description: 'This help text'
     })
     .option('allowmissing', {
         type: 'boolean',
-        default: false
+        description: 'Exit silently with no output, if no value was found.'
     })
-    .boolean(['j', 'h'])
     .demand(1)
     .usage('Usage: $0 <filename.cjson> <dotted.option.path>');
 var argv = argp.argv;
