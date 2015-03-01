@@ -22,11 +22,10 @@ var oconf = require('../lib/index'),
         .usage('Usage: $0 [--lint] [--bare] [--allowmissing] [--ignore <filename>] <filename.cjson> [path.to.value...]')
         .argv;
 
+// TODO: Remove this check for the lint option in v4.
 if (argv.lint) {
-    console.warn(
-        'The option --lint is deprecated and will be replaced by',
-        'a standalone binary with release 3.0.0 of oconf.'
-    );
+    console.warn('The option --lint is replaced by oconf-lint.');
+    process.exit(1);
 }
 
 try {
@@ -48,18 +47,16 @@ try {
         config = config[arg];
     });
 
-    if (!argv.lint) {
-        if (argv.bare) {
-            if (Array.isArray(config)) {
-                util.puts(config.join(' '));
-            } else if (typeof config === 'object' && config) {
-                util.puts(JSON.stringify(config));
+    if (argv.bare) {
+        if (Array.isArray(config)) {
+            util.puts(config.join(' '));
+        } else if (typeof config === 'object' && config) {
+            util.puts(JSON.stringify(config));
         } else {
-                util.puts(config);
-            }
-        } else {
-            util.puts(JSON.stringify(config, false, 4));
+            util.puts(config);
         }
+    } else {
+        util.puts(JSON.stringify(config, false, 4));
     }
 } catch (error) {
     console.error("Error:", error.message);
