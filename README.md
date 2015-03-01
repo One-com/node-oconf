@@ -1,7 +1,7 @@
 OConf
 =====
 
-[[![NPM version](https://badge.fury.io/js/oconf.svg)](http://badge.fury.io/js/oconf)
+[![NPM version](https://badge.fury.io/js/oconf.svg)](http://badge.fury.io/js/oconf)
 [![Build Status](https://travis-ci.org/One-com/node-oconf.svg)](https://travis-ci.org/One-com/node-oconf)
 [![Coverage Status](https://coveralls.io/repos/One-com/node-oconf/badge.svg)](https://coveralls.io/r/One-com/node-oconf)
 [![Dependency Status](https://david-dm.org/One-com/node-oconf.png)](https://david-dm.org/One-com/node-oconf)
