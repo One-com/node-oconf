@@ -1,27 +1,26 @@
 #!/usr/bin/env node
 // ex: filetype=javascript
 
-var oconf = require('../lib/index'),
-    util = require('util'),
-    optimist = require('optimist');
-
+var oconf = require('../lib/index');
+var util = require('util');
+var optimist = require('optimist');
 var argp = optimist
-            .options('j', {
-                alias: 'json',
-                default: false,
-                description: 'Force JSON output'
-            })
-            .options('h', {
-                alias: 'help',
-                default: false,
-            })
-            .option('allowmissing', {
-                type: 'boolean',
-                default: false
-            })
-            .boolean(['j', 'h'])
-            .demand(1)
-            .usage('Usage: $0 <filename.cjson> <dotted.option.path>');
+    .options('j', {
+        alias: 'json',
+        default: false,
+        description: 'Force JSON output'
+    })
+    .options('h', {
+        alias: 'help',
+        default: false,
+    })
+    .option('allowmissing', {
+        type: 'boolean',
+        default: false
+    })
+    .boolean(['j', 'h'])
+    .demand(1)
+    .usage('Usage: $0 <filename.cjson> <dotted.option.path>');
 var argv = argp.argv;
 
 if (argv.h) {
