@@ -3,7 +3,6 @@
 
 var oconf = require('../lib/index'),
     util = require('util'),
-    _ = require('underscore'),
     argv = require('optimist')
         // TODO: Remove this option in v4.
         .option('lint', {
