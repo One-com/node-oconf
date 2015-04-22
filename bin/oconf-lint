@@ -1,32 +1,4 @@
-#!/usr/bin/env node
-var argp = require('optimist')
-    .demand(1)
-    .usage('Usage: $0 path [..., path]')
-    .option('help', {
-        alias: 'h',
-        type: 'boolean',
-        description: 'This help text'
-    });
-var argv = argp.argv;
-
-// This is needed as optimist will not force exit when --help is
-// passed on it's own, and we want it to.
-if (argv.help) {
-    argp.showHelp();
-    process.exit();
-}
-
-var files = argv._.map(function (path) {
-    return require('path').resolve(process.cwd(), path);
-});
-
-require('async').eachSeries(files, require('../lib/lint'), function (err) {
-    if (err) {
-        console.error(err.file + '\n');
-        console.error(err.message);
-        process.exit(1);
-    } else {
-        console.warn('No linting errors found.');
-        process.exit(0);
-    }
-});
+#!/bin/bash
+# oneline dir: http://stackoverflow.com/a/246128
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+$DIR/oconf --lint $@

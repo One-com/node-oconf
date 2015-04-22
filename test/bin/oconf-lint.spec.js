@@ -55,12 +55,16 @@ describe('bin/oconf-lint', function () {
             code: 1,
             stdout: '',
             stderr: [
-                filePath,
-                '',
-                'Parse error on line 2:',
+                'Error: Parse error on line 2:',
                 '{    "foo": "bar}',
                 '------------^',
-                "Expecting 'STRING', 'NUMBER', 'NULL', 'TRUE', 'FALSE', '{', '[', got 'undefined'",
+                // XXX: The appended + '"' on the next line is a
+                // result of bad formatting in the module cjson's
+                // error handler. It should be removed once
+                // https://github.com/kof/node-cjson/pull/13 is merged
+                // or the problem is other wise fixed.
+                "Expecting 'STRING', 'NUMBER', 'NULL', 'TRUE', 'FALSE', '{', '[', got 'undefined'" + '"',
+                'File: "' + filePath + '"',
                 ''
             ].join('\n')
         });
