@@ -84,23 +84,23 @@ function _getKey(keyname, testObj) {
     return testObj[key];
 }
 
+var config;
+
+try {
+    config = oconf.load(argv._[0], { ignore: argv.ignore });
+} catch (error) {
+    console.error("Error:", error.message);
+    process.exit(1);
+}
+
 if (argv.lint) {
-    var files = argv._.map(function (path) {
-        return require('path').resolve(process.cwd(), path);
-    });
-    require('async').eachSeries(files, require('../lib/lint'), function (err) {
-        if (err) {
-            console.error(err.file + '\n');
-            console.error(err.message);
-            process.exit(1);
-        } else {
-            console.warn('No linting errors found.');
-            process.exit(0);
-        }
-    });
-} else if (argv['extract-option']) {
+    console.warn('No linting errors found.');
+    process.exit(0);
+}
+
+if (argv['extract-option']) {
     try {
-        var data = oconf.load(argv._[0], 99, false);
+        var data = config;
 
         data = _getKey(argv['extract-option'], data);
 
@@ -116,12 +116,5 @@ if (argv.lint) {
         }
     }
 } else {
-    try {
-        var config = oconf.load(argv._[0], {ignore: argv.ignore})
-
-        util.puts(JSON.stringify(config, false, 4));
-    } catch (error) {
-        console.error("Error:", error.message);
-        process.exit(1);
-    }
+    util.puts(JSON.stringify(config, false, 4));
 }

@@ -112,12 +112,16 @@ describe('bin/new-oconf', function () {
                 err: expect.it('to be an', Error),
                 stdout: '',
                 stderr: [
-                    filePath,
-                    '',
-                    'Parse error on line 2:',
+                    'Error: Parse error on line 2:',
                     '{    "foo": "bar}',
                     '------------^',
-                    "Expecting 'STRING', 'NUMBER', 'NULL', 'TRUE', 'FALSE', '{', '[', got 'undefined'",
+                    // XXX: The appended + '"' on the next line is a
+                    // result of bad formatting in the module cjson's
+                    // error handler. It should be removed once
+                    // https://github.com/kof/node-cjson/pull/13 is merged
+                    // or the problem is other wise fixed.
+                    "Expecting 'STRING', 'NUMBER', 'NULL', 'TRUE', 'FALSE', '{', '[', got 'undefined'" + '"',
+                    'File: "' + filePath + '"',
                     ''
                 ].join('\n')
             });
@@ -181,6 +185,48 @@ describe('bin/new-oconf', function () {
                 err: null,
                 stdout: 'qux\n',
                 stderr: ''
+            });
+        });
+    });
+    describe('--ignore flag', function () {
+        it('should work with no other options', function () {
+            return expect([
+                testFile('includeNonExistentFile'),
+                '--ignore',
+                testFile('nonExistentFile.cjson')
+
+            ], 'when passed as arguments to oconf', 'to satisfy', {
+                err: null,
+                code: 0,
+                stdout: formattedJson({
+                    foo: 123
+                })
+            });
+        });
+        it('should work with --extract-option', function () {
+            return expect([
+                testFile('includeNonExistentFile'),
+                '--ignore',
+                testFile('nonExistentFile.cjson'),
+                '--extract-option foo'
+
+            ], 'when passed as arguments to oconf', 'to satisfy', {
+                err: null,
+                code: 0,
+                stdout: formattedJson(123)
+            });
+        });
+        it('should work with --lint', function () {
+            return expect([
+                testFile('includeNonExistentFile'),
+                '--ignore',
+                testFile('nonExistentFile.cjson'),
+                '--lint'
+            ], 'when passed as arguments to oconf', 'to satisfy', {
+                err: null,
+                code: 0,
+                stdout: '',
+                stderr: 'No linting errors found.\n'
             });
         });
     });
