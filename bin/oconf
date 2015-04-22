@@ -16,18 +16,22 @@ var argp = require('optimist')
         type: 'string'
     })
     .option('lint', {
+        alias: 'l',
         description: 'Lint the input file and report any errors.',
         type: 'boolean'
     })
     .option('extract-option', {
+        alias: 'o',
         description: 'Extract the value of an option.',
         type: 'string'
 	})
     .option('option-as-json', {
+        alias: 'j',
         description: 'The extracted value will be extracted as JSON.',
         type: 'boolean'
     })
     .option('allow-missing-option', {
+        alias: 'm',
         description: 'Do not fail when no such value is present.',
         type: 'boolean'
     })
