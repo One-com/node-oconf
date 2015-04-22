@@ -2,7 +2,7 @@
 var exec = require('child_process').exec;
 var expect = require('unexpected');
 
-var pathToBin = require('path').resolve(__dirname, '../../bin/', 'new-oconf');
+var pathToBin = require('path').resolve(__dirname, '../../bin/', 'oconf');
 
 function formattedJson(obj) {
     return JSON.stringify(obj, null, 4) + '\n';

@@ -1,56 +1,120 @@
 #!/usr/bin/env node
-// ex: filetype=javascript
 
 var oconf = require('../lib/index');
 var util = require('util');
+
 var argp = require('optimist')
-    .option('lint', { // TODO: Remove this option in v4.
+    .usage('Usage: $0 [--lint|--extract-option <option> [--allow-missing-option][--option-as-json]] <file>')
+    .option('help', {
+        alias: 'h',
+        description: 'This help text.',
         type: 'boolean'
     })
     .option('ignore', {
         alias: 'i',
-        type: 'string',
-        description: 'Absolute path or glob pattern for ignoring included files.'
+        description: 'Absolute path or glob pattern for ignoring included files.',
+        type: 'string'
     })
-    .options('help', {
-        alias: 'h',
-        description: 'This help text.'
-    })
-    .option('bare', { // TODO: Remove this option in v4.
+    .option('lint', {
+        description: 'Lint the input file and report any errors.',
         type: 'boolean'
     })
-    .option('allowmissing', { // TODO: Remove this option in v4.
+    .option('extract-option', {
+        description: 'Extract the value of an option.',
+        type: 'string'
+	})
+    .option('option-as-json', {
+        description: 'The extracted value will be extracted as JSON.',
         type: 'boolean'
     })
-    .demand(1)
-    .usage('Usage: $0 [--ignore <path>] <filename.cjson>');
+    .option('allow-missing-option', {
+        description: 'Do not fail when no such value is present.',
+        type: 'boolean'
+    })
+;
+
 var argv = argp.argv;
 
 // This is needed as optimist will not force exit when --help is
 // passed on it's own, and we want it to.
-if (argv.help) {
+if (argv.help || argv._.length < 1) {
     argp.showHelp();
     process.exit(0);
 }
 
-// TODO: Remove this check for the lint option in v4.
-if (argv.lint) {
-    console.warn('The option --lint is replaced by oconf-lint.');
+if (!argv['extract-option'] && (argv['option-as-json'] || argv['allow-missing-option'])) {
+    if (argv['option-as-json']) {
+        console.error('The flag --option-as-json does not make sense without the --extract-option flag.');
+    } else if (argv['allow-missing-option']) {
+        console.error('The flag --allow-missing-option does not make sense without the --extract-option flag.');
+    }
+
+    console.error('');
+    argp.showHelp();
     process.exit(1);
 }
 
-try {
-    var config = oconf.load(argv._[0], {ignore: argv.ignore}),
-        pathToValue = argv._.splice(1);
 
-    // TODO: Remove this check in v4.
-    if (argv.allowmissing || argv.bare || pathToValue.length > 0) {
-        console.warn('oconf no longer supports extracting values this way. Use oconf-extract-option instead.');
-        process.exit(1);
+function _getKey(keyname, testObj) {
+    if (typeof keyname === 'string') {
+        keyname = keyname.split(".");
     }
 
-    util.puts(JSON.stringify(config, false, 4));
+    // An non-existing key doesn't exist!
+    if (keyname.length === 0) {
+        return {error: 'Not found'};
+    }
+
+    var key = keyname.shift();
+
+    // Is it an object -- and does it have the key
+    if (testObj !== new Object(testObj) || !(key in testObj)) {
+        if (argv.allowmissing) {
+            process.exit(0);
+        }
+        throw new Error('Key ' + key + ' not found in ' + JSON.stringify(testObj));
+    }
+
+    // Try more!
+    if (keyname.length >= 1) {
+        return _getKey(keyname, testObj[key]);
+    }
+
+    // We're at the end.
+    return testObj[key];
+}
+
+var config;
+
+try {
+    config = oconf.load(argv._[0], { ignore: argv.ignore });
 } catch (error) {
     console.error("Error:", error.message);
     process.exit(1);
+}
+
+if (argv.lint) {
+    console.warn('No linting errors found.');
+    process.exit(0);
+}
+
+if (argv['extract-option']) {
+    try {
+        var data = config;
+
+        data = _getKey(argv['extract-option'], data);
+
+        if (argv['option-as-json'] || (typeof data !== 'string' && typeof data !== 'number')) {
+            data = JSON.stringify(data, 4, false);
+        }
+
+        util.puts(data);
+    } catch (error) {
+        if (!argv['allow-missing-option']) {
+            console.error("Error:", error.message);
+            process.exit(1);
+        }
+    }
+} else {
+    util.puts(JSON.stringify(config, false, 4));
 }
