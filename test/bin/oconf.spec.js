@@ -43,7 +43,7 @@ expect.addAssertion('when passed as arguments to oconf', function (expect, subje
     });
 });
 
-describe('bin/new-oconf', function () {
+describe('bin/oconf', function () {
     describe('basic functionality', function () {
         it('should print the resolved json structure to stdout', function () {
             return expect(testFile('base'), 'when passed as arguments to oconf', 'to satisfy', {
