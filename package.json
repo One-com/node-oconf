@@ -23,6 +23,7 @@
   ],
   "bin": {
     "oconf": "bin/oconf",
+    "oconf-lint": "bin/oconf-lint",
     "oconf-extract-option": "bin/oconf-extract-option"
   },
   "scripts": {
