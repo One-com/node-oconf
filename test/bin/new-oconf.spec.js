@@ -169,7 +169,7 @@ describe('bin/new-oconf', function () {
                 err: null,
                 code: 0,
                 stdout: '',
-                stderr: '',
+                stderr: ''
             });
         });
         it('should support dotting out properties (foo.bar)', function () {
@@ -180,7 +180,7 @@ describe('bin/new-oconf', function () {
             ], 'when passed as arguments to oconf', 'to satisfy', {
                 err: null,
                 stdout: 'qux\n',
-                stderr: '',
+                stderr: ''
             });
         });
     });
