@@ -2,7 +2,7 @@
   "author": "Morten Siebuhr <sbhr@sbhr.dk>",
   "name": "oconf",
   "description": "Configuration",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/One-com/node-oconf.git"
