@@ -183,6 +183,19 @@ describe('bin/oconf', function () {
             });
         });
     });
+    describe('missing --extract-option flag', function () {
+        it('should return the option value and warn the user', function () {
+            return expect([
+                testFile('base'),
+                'foo'
+            ], 'when passed as arguments to oconf', 'to satisfy', {
+                err: expect.it('to be an', Error),
+                code: 1,
+                stdout: '',
+                stderr: 'Error: Did you forget the --extract-option flag?\n'
+            });
+        });
+    });
     describe('--ignore flag', function () {
         it('should work with no other options', function () {
             return expect([

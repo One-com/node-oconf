@@ -132,5 +132,10 @@ if (argv['extract-option']) {
         }
     }
 } else {
+    if (argv._[1]) {
+        console.error("Error: Did you forget the --extract-option flag?");
+        process.exit(1);
+    }
+
     util.puts(JSON.stringify(config, false, 4));
 }
