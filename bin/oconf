@@ -120,7 +120,9 @@ if (argv['extract-option']) {
 
         data = _getKey(argv['extract-option'], data);
 
-        if (argv['option-as-json'] || (typeof data !== 'string' && typeof data !== 'number')) {
+        if (!argv['option-as-json'] && Array.isArray(data)) {
+            data = data.join(' ');
+        } else if (argv['option-as-json'] || (typeof data !== 'string' && typeof data !== 'number')) {
             data = JSON.stringify(data, 4, false);
         }
 

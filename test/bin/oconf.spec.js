@@ -134,6 +134,17 @@ describe('bin/oconf', function () {
                 stderr: ''
             });
         });
+        it('should return the option value when the value is a list', function () {
+            return expect([
+                testFile('list'),
+                '--extract-option',
+                'list'
+            ], 'when passed as arguments to oconf', 'to satisfy', {
+                err: null,
+                stdout: 'foo bar\n',
+                stderr: ''
+            });
+        });
         it('should return the option value as json when passed --option-as-json', function () {
             return expect([
                 testFile('base'),
