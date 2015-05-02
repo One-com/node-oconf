@@ -269,4 +269,31 @@ describe('bin/oconf', function () {
             });
         });
     });
+    describe('backwards compatibility for removed options', function () {
+        it('should return the option value as json when passed --json instead of --option-as-json', function () {
+            return expect([
+                testFile('base'),
+                '--extract-option',
+                'foo',
+                '--json'
+            ], 'when passed as arguments to oconf', 'to satisfy', {
+                err: null,
+                stdout: formattedJson('overwrite this'),
+                stderr: ''
+            });
+        });
+        it('should not fail when no such option exists when passing --allowmissing instead of --allow-missing-option', function () {
+            return expect([
+                testFile('base'),
+                '--extract-option',
+                'bar',
+                '--allowmissing'
+            ], 'when passed as arguments to oconf', 'to satisfy', {
+                err: null,
+                code: 0,
+                stdout: '',
+                stderr: ''
+            });
+        });
+    });
 });

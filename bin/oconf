@@ -54,7 +54,7 @@ if (argv['json']) {
     argv['option-as-json'] = true;
 }
 if (argv['allowmissing']) {
-    argv['option-as-json'] = true;
+    argv['allow-missing-option'] = true;
 }
 //////////////////////////////////////////////////////////////////
 
@@ -85,7 +85,7 @@ function _getKey(keyname, testObj) {
 
     // Is it an object -- and does it have the key
     if (testObj !== new Object(testObj) || !(key in testObj)) {
-        if (argv.allowmissing) {
+        if (argv['allow-missing-option']) {
             process.exit(0);
         }
         throw new Error('Key ' + key + ' not found in ' + JSON.stringify(testObj));
