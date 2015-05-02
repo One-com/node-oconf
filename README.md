@@ -76,35 +76,35 @@ resolved JSON object.
 }
 ```
 
-You can lint your configuration files by using `oconf-lint`. It will
-not output any of the resolved configuration, but only exit with an
-error in case of any formatting errors in the files.
+You can lint your configuration files by using the `--lint` flag. It
+will not output any of the resolved configuration, but only exit with
+an error in case of any formatting errors in the files.
 
 ```
- $ oconf-lint config.cjson
+ $ oconf --lint config.cjson
 ```
 
-By using `oconf-extract-option` you can supply a path to a value as
-well:
+By using the `--extract-option` flag you can supply a path to a value
+as well:
 
 ```
- $ oconf-extract-option config.cjson obj.foo
+ $ oconf --extract-option obj.foo config.cjson
 bar
 ```
 
 The output from the above is the raw data. That is useful when you
 need to pass the configuration to other CLI tools. If you need the
-JSON formatted data, you can pass the `--json` option.
+JSON formatted data, you can pass the `--option-as-json` option.
 
 ```
- $ oconf-extract-option --json config.cjson obj.foo
+ $ oconf --extract-option obj.foo --json config.cjson
 "bar"
 ```
 
-If the key is missing `oconf-extract-option` will exit with status
+If the key is missing `oconf --extract-option` will exit with status
 code 1. If you need to overwrite that behaviour you can pass the
-`--allowmissing` flag to oconf which will make it exit with status
-code 0 if no value is found at the given path.
+`--allow-missing-option` flag to oconf which will make it exit with
+status code 0 if no value is found at the given path.
 
 ## Tests
 
