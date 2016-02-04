@@ -142,3 +142,67 @@ describe('#include behaviour', function () {
         });
     });
 });
+
+describe('#public behaviour', function () {
+    describe('when loading with public:false (the default)', function () {
+        describe('where the root object contains a #public property', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-base.cjson'));
+            });
+            it('should fold the #public properties down into the base structure', function () {
+                expect(data, 'to equal', {
+                    foo: 'do not expose to public',
+                    what: 'what is public'
+                });
+            });
+        });
+
+        describe('where a child object contains some #public properties', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-deep.cjson'));
+            });
+            it('should fold the #public properties down into the base structure', function () {
+                expect(data, 'to equal', {
+                    foo: "do not expose to public",
+                    bar: {
+                        quux: "super secret"
+                    },
+                    hello: {
+                        earth: "mostly harmless",
+                        answer: 42
+                    }
+                });
+            });
+        });
+    });
+
+    describe('when loading with public:true', function () {
+        describe('where the root object contains a #public property', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-base.cjson'), { public: true });
+            });
+            it('should fold the #public properties down into the base structure, and omit secret properties and leaves', function () {
+                expect(data, 'to equal', {
+                    what: 'what is public'
+                });
+            });
+        });
+
+        describe('where a child object contains some #public properties', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-deep.cjson'), { public: true });
+            });
+            it('should fold the #public properties down into the base structure', function () {
+                expect(data, 'to equal', {
+                    hello: {
+                        answer: 42
+                    }
+                });
+            });
+        });
+    });
+});

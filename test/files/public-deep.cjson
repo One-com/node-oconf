@@ -1,0 +1,12 @@
+{
+	"foo": "do not expose to public",
+	"bar": {
+		"quux": "super secret"
+	},
+	"hello": {
+		"earth": "mostly harmless",
+		"#public": {
+			"answer": 42
+		}
+	}
+}
