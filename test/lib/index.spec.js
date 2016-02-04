@@ -22,6 +22,9 @@ describe('Basic tests', function () {
             expect(data, 'to only have keys', ['foo', 'what']);
         });
     });
+});
+
+describe('#include behaviour', function () {
     describe('extend-base.cjson', function () {
         var data;
         before(function () {
