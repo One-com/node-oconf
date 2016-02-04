@@ -91,12 +91,12 @@ describe('Basic tests', function () {
         it('Loading loop1.cjson throws error', function () {
             expect(function () {
                 oconf.load(testFile('loop1.cjson'));
-            }, 'to throw', /^Loop in loaded files: /);
+            }, 'to throw', /^Loop in loaded files/);
         });
         it('Loading loop2.cjson throws error', function () {
             expect(function () {
                 oconf.load(testFile('loop2.cjson'));
-            }, 'to throw', /^Loop in loaded files:/);
+            }, 'to throw', /^Loop in loaded files/);
         });
     });
     describe('includeNonExistentFile.cjson', function () {
