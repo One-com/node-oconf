@@ -1,0 +1,13 @@
+{
+	"foo": "do not expose to public",
+	"bar": {
+		"quux": "super secret"
+	},
+	"hello": {
+		"earth": "mostly harmless",
+		"#public": {
+			"answer": "Insufficient data for meaningful answer"
+		},
+		"#include": "./public-included.cjson"
+	}
+}

@@ -176,6 +176,44 @@ describe('#public behaviour', function () {
                 });
             });
         });
+
+        describe('where including a file that overwrites a #public property with a non-public one', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-deep-with-include.cjson'));
+            });
+            it('should overwrite the #public property with the value being included', function () {
+                expect(data, 'to equal', {
+                    foo: "do not expose to public",
+                    bar: {
+                        quux: "super secret"
+                    },
+                    hello: {
+                        earth: "mostly harmless",
+                        answer: 42
+                    }
+                });
+            });
+        });
+
+        describe('where including a file that overwrites a #public property with another public one', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-deep-with-public-include.cjson'));
+            });
+            it('should overwrite the #public property with the value being included', function () {
+                expect(data, 'to equal', {
+                    foo: "do not expose to public",
+                    bar: {
+                        quux: "super secret"
+                    },
+                    hello: {
+                        earth: "mostly harmless",
+                        answer: 42
+                    }
+                });
+            });
+        });
     });
 
     describe('when loading with public:true', function () {
@@ -197,6 +235,34 @@ describe('#public behaviour', function () {
                 data = oconf.load(testFile('public-deep.cjson'), { public: true });
             });
             it('should fold the #public properties down into the base structure', function () {
+                expect(data, 'to equal', {
+                    hello: {
+                        answer: 42
+                    }
+                });
+            });
+        });
+
+        describe('where including a file that overwrites a #public property with a non-public one', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-deep-with-include.cjson'));
+            });
+            it('should not overwrite the #public property', function () {
+                expect(data, 'to equal', {
+                    hello: {
+                        answer: "Insufficient data for meaningful answer"
+                    }
+                });
+            });
+        });
+
+        describe('where including a file that overwrites a #public property with another public one', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-deep-with-public-include.cjson'));
+            });
+            it('should overwrite the #public property with the value being included', function () {
                 expect(data, 'to equal', {
                     hello: {
                         answer: 42
