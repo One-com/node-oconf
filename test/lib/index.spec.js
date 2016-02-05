@@ -243,7 +243,7 @@ describe('#public behaviour', function () {
         describe('where trying to overwrite a non-public property with a #public one', function () {
             it('should throw an error', function () {
                 expect(function () {
-                    oconf.load(testFile('public-deep-with-include.cjson', { public: true }));
+                    oconf.load(testFile('public-deep-with-include.cjson'), { public: true });
                 }, 'to throw', /^Overwriting property with public property not allowed/);
             });
         });
@@ -251,7 +251,7 @@ describe('#public behaviour', function () {
         describe('where trying to overwrite a #public property with a non-public one', function () {
             it('should throw an error', function () {
                 expect(function () {
-                    oconf.load(testFile('public-deep-with-include.cjson', { public: true }));
+                    oconf.load(testFile('public-deep-with-include.cjson'), { public: true });
                 }, 'to throw', /^Overwriting property with public property not allowed/);
             });
         });
@@ -259,7 +259,7 @@ describe('#public behaviour', function () {
         describe('where including a file that overwrites a #public property with another public one', function () {
             var data;
             before(function () {
-                data = oconf.load(testFile('public-deep-with-public-include.cjson', { public: true }));
+                data = oconf.load(testFile('public-deep-with-public-include.cjson'), { public: true });
             });
             it('should overwrite the included #public property with our value, and omit secret properties and leaves', function () {
                 expect(data, 'to equal', {
