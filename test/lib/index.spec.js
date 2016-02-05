@@ -193,12 +193,12 @@ describe('#public behaviour', function () {
             });
         });
 
-        describe('where including a file that overwrites a #public property with another public one', function () {
+        describe('where including a file that already has a #public property which we try to overwrite', function () {
             var data;
             before(function () {
                 data = oconf.load(testFile('public-deep-with-public-include.cjson'));
             });
-            it('should overwrite the #public property with the value being included', function () {
+            it('should overwrite the included #public property with our value', function () {
                 expect(data, 'to equal', {
                     foo: "do not expose to public",
                     bar: {
@@ -206,7 +206,7 @@ describe('#public behaviour', function () {
                     },
                     hello: {
                         earth: "mostly harmless",
-                        answer: 42
+                        answer: 'Insufficient data for meaningful answer'
                     }
                 });
             });
@@ -261,10 +261,10 @@ describe('#public behaviour', function () {
             before(function () {
                 data = oconf.load(testFile('public-deep-with-public-include.cjson', { public: true }));
             });
-            it('should overwrite the #public property with the value being included, and omit secret properties and leaves', function () {
+            it('should overwrite the included #public property with our value, and omit secret properties and leaves', function () {
                 expect(data, 'to equal', {
                     hello: {
-                        answer: 42
+                        answer: 'Insufficient data for meaningful answer'
                     }
                 });
             });
