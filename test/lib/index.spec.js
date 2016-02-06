@@ -270,4 +270,12 @@ describe('#public behaviour', function () {
             });
         });
     });
+
+    describe('with public-non-object.cjson', function () {
+        it('throws an error', function () {
+            expect(function () {
+                oconf.load(testFile('public-non-object.cjson'));
+            }, 'to throw', /^\#public must always be an object/);
+        });
+    });
 });
