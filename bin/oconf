@@ -30,6 +30,11 @@ var argp = require('optimist')
         description: 'The extracted value will be extracted as JSON.',
         type: 'boolean'
     })
+    .option('public', {
+        alias: 'p',
+        description: 'Only values in #public objects will be extracted.',
+        type: 'boolean'
+    })
     .option('json', { type: 'boolean' })
     .option('allow-missing-option', {
         alias: 'm',
