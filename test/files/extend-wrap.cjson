@@ -1,0 +1,3 @@
+{
+	"#include": [ "extend-base.cjson", "deep.cjson"]
+}

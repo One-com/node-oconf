@@ -24,17 +24,13 @@ describe('Basic tests', function () {
     });
 
     describe('calling load method with an array of config file names', function () {
-        var data;
+        var data, dataInclude;
         before(function () {
             data = oconf.load([testFile('extend-base.cjson'), testFile('deep.cjson')]);
+            dataInclude = oconf.load(testFile('extend-wrap.cjson'));
         });
-        it('merges the right file into the left file', function () {
-            expect(data, 'to equal', {
-                foo: {
-                    bar: 'qux'
-                },
-                what: 'this is from default.cjson.'
-            });
+        it('functions like calling #include with an array of filenames in the same order', function () {
+            expect(data, 'to equal', dataInclude);
         });
     });
 });
@@ -297,20 +293,13 @@ describe('#public behaviour', function () {
         });
 
         describe('when calling load method with an array of config file names containing public properties', function () {
-            var data;
+            var data, dataInclude;
             before(function () {
                 data = oconf.load([testFile('public-left.cjson'), testFile('public-right.cjson')]);
+                dataInclude = oconf.load(testFile('public-left-right-wrap.cjson'));
             });
-            it('merges the right file into the left file correctly', function () {
-                expect(data, 'to equal', {
-                    foo: {
-                        bar: 'public-left.cjson'
-                    },
-                    what: 'this is from public-right.cjson.',
-                    '#public': {
-                        what: 'this is from public-right.cjson.'
-                    }
-                });
+            it('functions like calling #include with an array of filenames in the same order', function () {
+                expect(data, 'to equal', dataInclude);
             });
         });
     });
