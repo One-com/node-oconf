@@ -220,7 +220,7 @@ describe('#public behaviour', function () {
                             {
                                 bar: 'quux'
                             }
-                        ],
+                        ]
                     },
                     '#public': [{
                         foo: [
