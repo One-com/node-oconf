@@ -14,11 +14,13 @@ Load cjson (JSON + c-style) commentaries, with inheritance-sugar on top:
          "value": 50
     }
 
-## `#include` statement
+## The `#include` directive
+
+Anywhere in your cjson file, you can `#include` another cjson file. The file containing the `#include` directive overrides any values from the file being included, in case of conflicts.
 
 ### Format
 
-The basic idea is to experiment with applying `#include`-statements recusively
+The basic idea is to experiment with applying `#include`-directives recusively
 inside JSON/cJSON documents:
 
 ```javascript
@@ -61,6 +63,74 @@ structure like this is used:
    from the relevant environment-file.
  * `/etc/$WORKNAME/$PROJECTNAME-secrets.cjson` inherits the machine-specific
    things and typically adds production secrets.
+
+## The `#public` directive
+
+With this directive, you can generate a json blob that can be safely exposed to client-side code. This is useful when some properties on the same object are safe to expose to client code, while others are not.
+
+### Restrictions
+
+In case of conflicts between a `#public` and a non-public key on the same object, an error is thrown - it is usually a sign that a new key needs to be introduced if the same key contains different values for client and server code.
+
+The `#include` directives are processed before `#public`.
+
+### Format
+
+Anywhere in your cjson file, you can add a `#public` property to an object, denoting some keys on that property you want grouped together on the `#public` property of the root of your config. 
+
+```javascript
+// some-public-settings.cjson
+{
+  "some-setting": "default value",
+  "value": 100,
+  "fancy-list": {
+    "expose-foo": true,
+    "#public": {
+      "scroll-timeout": 100
+    }
+  }
+}
+```
+
+Will result in a config with:
+
+```javascript
+{
+  "some-setting": "default-value",
+  "value": 100,
+  "fancy-list": {
+    "expose-foo": true,
+    "scroll-timeout": 100
+  },
+  "#public": {
+    "fancy-list": {
+      "scroll-timeout": 100
+    }
+  }
+}
+```
+
+### Returning only configuration marked as `#public`
+
+You can instruct `oconf.load` to only return configuration properties marked with `#public`:
+
+    > var oconf = require('oconf');
+    > oconf.load('config/some-public-settings.cjson', { public: true });
+    {
+        "fancy-list": {
+            "scroll-timeout": 100
+        }
+    }
+
+Of course you can also just grab the `#public` property from the result of `oconf.load`:
+
+    > var oconf = require('oconf');
+    > oconf.load('config/some-public-settings.cjson')['#public'];
+    {
+        "fancy-list": {
+            "scroll-timeout": 100
+        }
+    }
 
 ## Binary
 
@@ -107,6 +177,17 @@ If the key is missing `oconf --extract-option` will exit with status
 code 1. If you need to overwrite that behaviour you can pass the
 `--allow-missing-option` flag to oconf which will make it exit with
 status code 0 if no value is found at the given path.
+
+You can also filter out values in the `#public` blob with the `--public` flag.
+
+```
+ $ oconf --public some-public-settings.cjson
+{
+  "fancy-list": {
+    "scroll-timeout": 100
+  }
+}
+```
 
 ## Tests
 
