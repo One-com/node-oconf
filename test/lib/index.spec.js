@@ -295,6 +295,24 @@ describe('#public behaviour', function () {
                 });
             });
         });
+
+        describe('when calling load method with an array of config file names containing public properties', function () {
+            var data;
+            before(function () {
+                data = oconf.load([testFile('public-left.cjson'), testFile('public-right.cjson')]);
+            });
+            it('merges the right file into the left file correctly', function () {
+                expect(data, 'to equal', {
+                    foo: {
+                        bar: 'public-left.cjson'
+                    },
+                    what: 'this is from public-right.cjson.',
+                    '#public': {
+                        what: 'this is from public-right.cjson.'
+                    }
+                });
+            });
+        });
     });
 
     describe('when loading with public:true', function () {
