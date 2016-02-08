@@ -269,6 +269,16 @@ describe('#public behaviour', function () {
                 });
             });
         });
+
+        describe('when there are no #public properties at all', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('base.cjson'), { public: true });
+            });
+            it('should return an empty object', function () {
+                expect(data, 'to equal', {});
+            });
+        });
     });
 
     describe('with public-non-object.cjson', function () {
