@@ -14,7 +14,9 @@ Load cjson (JSON + c-style) commentaries, with inheritance-sugar on top:
          "value": 50
     }
 
-## Format
+## `#include` statement
+
+### Format
 
 The basic idea is to experiment with applying `#include`-statements recusively
 inside JSON/cJSON documents:
@@ -47,7 +49,7 @@ Will result in a config with:
 The extension of objects also work recursively, so setting a single sub-key
 somewhere doesn't override the entire thing.
 
-## Structure
+### Structure
 
 There are no restrictions in how includes work (except no loops). Usually a
 structure like this is used:
