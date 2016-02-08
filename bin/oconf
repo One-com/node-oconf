@@ -108,7 +108,7 @@ function _getKey(keyname, testObj) {
 var config;
 
 try {
-    config = oconf.load(argv._[0], { ignore: argv.ignore });
+    config = oconf.load(argv._[0], { ignore: argv.ignore, public: argv.public });
 } catch (error) {
     console.error("Error:", error.message);
     process.exit(1);
