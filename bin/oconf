@@ -123,7 +123,7 @@ if (argv['extract-option']) {
         if (!argv['option-as-json'] && Array.isArray(data)) {
             data = data.join(' ');
         } else if (argv['option-as-json'] || (typeof data !== 'string' && typeof data !== 'number')) {
-            data = JSON.stringify(data, 4, false);
+            data = JSON.stringify(data, false, 4);
         }
 
         util.puts(data);
