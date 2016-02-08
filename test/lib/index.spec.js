@@ -153,7 +153,10 @@ describe('#public behaviour', function () {
             it('should fold the #public properties down into the base structure', function () {
                 expect(data, 'to equal', {
                     foo: 'do not expose to public',
-                    what: 'what is public'
+                    what: 'what is public',
+                    '#public': {
+                        what: 'what is public'
+                    }
                 });
             });
         });
@@ -172,6 +175,11 @@ describe('#public behaviour', function () {
                     hello: {
                         earth: "mostly harmless",
                         answer: 42
+                    },
+                    '#public': {
+                        hello: {
+                            answer: 42
+                        }
                     }
                 });
             });
@@ -188,14 +196,14 @@ describe('#public behaviour', function () {
                         {
                             bar: 'quux'
                         }
-                    ]/*,
+                    ],
                     '#public': {
                         foo: [
                             {
                                 bar: 'quux'
                             }
                         ]
-                    }*/
+                    }
                 });
             });
         });
@@ -205,7 +213,7 @@ describe('#public behaviour', function () {
             before(function () {
                 data = oconf.load(testFile('array-with-object-with-array-with-object-with-public.cjson'));
             });
-            it('should fold the #public properties down into the base structure', function () {
+            it.skip('should fold the #public properties down into the base structure', function () {
                 expect(data, 'to exhaustively satisfy', {
                     0: {
                         foo: [
@@ -213,14 +221,14 @@ describe('#public behaviour', function () {
                                 bar: 'quux'
                             }
                         ],
-                    }/*,
+                    },
                     '#public': [{
                         foo: [
                             {
                                 bar: 'quux'
                             }
                         ]
-                    }]*/
+                    }]
                 }).and('to be an array');
             });
         });
@@ -255,6 +263,11 @@ describe('#public behaviour', function () {
                     hello: {
                         earth: "mostly harmless",
                         answer: 'Insufficient data for meaningful answer'
+                    },
+                    '#public': {
+                        hello: {
+                            answer: 'Insufficient data for meaningful answer'
+                        }
                     }
                 });
             });
