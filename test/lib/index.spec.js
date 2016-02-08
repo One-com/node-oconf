@@ -22,6 +22,21 @@ describe('Basic tests', function () {
             expect(data, 'to only have keys', ['foo', 'what']);
         });
     });
+
+    describe('calling load method with an array of config file names', function () {
+        var data;
+        before(function () {
+            data = oconf.load([testFile('extend-base.cjson'), testFile('deep.cjson')]);
+        });
+        it('merges the right file into the left file', function () {
+            expect(data, 'to equal', {
+                foo: {
+                    bar: 'qux'
+                },
+                what: 'this is from default.cjson.'
+            });
+        });
+    });
 });
 
 describe('#include behaviour', function () {
