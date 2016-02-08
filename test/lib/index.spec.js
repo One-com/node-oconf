@@ -350,6 +350,14 @@ describe('#public behaviour', function () {
         });
     });
 
+    describe('with public-array.cjson', function () {
+        it('throws an error', function () {
+            expect(function () {
+                oconf.load(testFile('public-array.cjson'));
+            }, 'to throw', /^\#public must always be an object/);
+        });
+    });
+
     describe('with public-non-object.cjson', function () {
         it('throws an error', function () {
             expect(function () {
