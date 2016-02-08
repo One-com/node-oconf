@@ -1,0 +1,15 @@
+{
+ 	"some-setting": "default value",
+	"value": 100,
+	"fancy-list": {
+		"expose-foo": true,
+		"#public": {
+			"scroll-timeout": 100
+		}
+	},
+	"#public": {
+		"fancy-list": {
+			"scroll-timeout": 200
+		}
+	}
+}

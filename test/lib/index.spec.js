@@ -233,11 +233,19 @@ describe('#public behaviour', function () {
             });
         });
 
+        describe('when trying to overwrite a public property with a property that was declared public at another level', function () {
+            it('should throw an error', function () {
+                expect(function () {
+                    oconf.load(testFile('public-conflict.cjson'));
+                }, 'to throw', /^Unsupported combination of public and non/);
+            });
+        });
+
         describe('where trying to overwrite a non-public property with a #public one', function () {
             it('should throw an error', function () {
                 expect(function () {
                     oconf.load(testFile('public-deep-with-include.cjson'));
-                }, 'to throw', /^Overwriting property with public property not allowed/);
+                }, 'to throw', /^Unsupported combination of public and non/);
             });
         });
 
@@ -245,7 +253,7 @@ describe('#public behaviour', function () {
             it('should throw an error', function () {
                 expect(function () {
                     oconf.load(testFile('public-deep-with-include.cjson'));
-                }, 'to throw', /^Overwriting property with public property not allowed/);
+                }, 'to throw', /^Unsupported combination of public and non/);
             });
         });
 
@@ -305,7 +313,7 @@ describe('#public behaviour', function () {
             it('should throw an error', function () {
                 expect(function () {
                     oconf.load(testFile('public-deep-with-include.cjson'), { public: true });
-                }, 'to throw', /^Overwriting property with public property not allowed/);
+                }, 'to throw', /^Unsupported combination of public and non/);
             });
         });
 
@@ -313,7 +321,7 @@ describe('#public behaviour', function () {
             it('should throw an error', function () {
                 expect(function () {
                     oconf.load(testFile('public-deep-with-include.cjson'), { public: true });
-                }, 'to throw', /^Overwriting property with public property not allowed/);
+                }, 'to throw', /^Unsupported combination of public and non/);
             });
         });
 
