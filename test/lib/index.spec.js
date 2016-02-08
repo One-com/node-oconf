@@ -177,6 +177,54 @@ describe('#public behaviour', function () {
             });
         });
 
+        describe('where a child object in a child array contains some #public properties', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('array-with-object-with-public.cjson'));
+            });
+            it('should fold the #public properties down into the base structure', function () {
+                expect(data, 'to equal', {
+                    foo: [
+                        {
+                            bar: 'quux'
+                        }
+                    ]/*,
+                    '#public': {
+                        foo: [
+                            {
+                                bar: 'quux'
+                            }
+                        ]
+                    }*/
+                });
+            });
+        });
+
+        describe('where a child object in a child array contains some #public properties', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('array-with-object-with-array-with-object-with-public.cjson'));
+            });
+            it('should fold the #public properties down into the base structure', function () {
+                expect(data, 'to exhaustively satisfy', {
+                    0: {
+                        foo: [
+                            {
+                                bar: 'quux'
+                            }
+                        ],
+                    }/*,
+                    '#public': [{
+                        foo: [
+                            {
+                                bar: 'quux'
+                            }
+                        ]
+                    }]*/
+                }).and('to be an array');
+            });
+        });
+
         describe('where trying to overwrite a non-public property with a #public one', function () {
             it('should throw an error', function () {
                 expect(function () {
