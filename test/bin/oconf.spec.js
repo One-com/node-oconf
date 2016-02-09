@@ -88,7 +88,7 @@ describe('bin/oconf', function () {
                 err: null,
                 code: 0,
                 stdout: '',
-                stderr: expect.it('to match', /Options:/)
+                stderr: expect.it('to match', /Options/)
             });
         });
     });
