@@ -30,6 +30,11 @@ var argp = require('optimist')
         description: 'The extracted value will be extracted as JSON.',
         type: 'boolean'
     })
+    .option('public', {
+        alias: 'p',
+        description: 'Only values in #public objects will be extracted.',
+        type: 'boolean'
+    })
     .option('json', { type: 'boolean' })
     .option('allow-missing-option', {
         alias: 'm',
@@ -103,7 +108,7 @@ function _getKey(keyname, testObj) {
 var config;
 
 try {
-    config = oconf.load(argv._[0], { ignore: argv.ignore });
+    config = oconf.load(argv._, { ignore: argv.ignore, public: argv.public });
 } catch (error) {
     console.error("Error:", error.message);
     process.exit(1);
@@ -123,7 +128,7 @@ if (argv['extract-option']) {
         if (!argv['option-as-json'] && Array.isArray(data)) {
             data = data.join(' ');
         } else if (argv['option-as-json'] || (typeof data !== 'string' && typeof data !== 'number')) {
-            data = JSON.stringify(data, 4, false);
+            data = JSON.stringify(data, false, 4);
         }
 
         util.puts(data);
@@ -134,10 +139,5 @@ if (argv['extract-option']) {
         }
     }
 } else {
-    if (argv._[1]) {
-        console.error("Error: Did you forget the --extract-option flag?");
-        process.exit(1);
-    }
-
     util.puts(JSON.stringify(config, false, 4));
 }

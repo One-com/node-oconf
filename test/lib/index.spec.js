@@ -22,6 +22,20 @@ describe('Basic tests', function () {
             expect(data, 'to only have keys', ['foo', 'what']);
         });
     });
+
+    describe('calling load method with an array of config file names', function () {
+        var data, dataInclude;
+        before(function () {
+            data = oconf.load([testFile('extend-base.cjson'), testFile('deep.cjson')]);
+            dataInclude = oconf.load(testFile('extend-wrap.cjson'));
+        });
+        it('functions like calling #include with an array of filenames in the same order', function () {
+            expect(data, 'to equal', dataInclude);
+        });
+    });
+});
+
+describe('#include behaviour', function () {
     describe('extend-base.cjson', function () {
         var data;
         before(function () {
@@ -91,12 +105,12 @@ describe('Basic tests', function () {
         it('Loading loop1.cjson throws error', function () {
             expect(function () {
                 oconf.load(testFile('loop1.cjson'));
-            }, 'to throw', /^Loop in loaded files: /);
+            }, 'to throw', /^Loop in loaded files/);
         });
         it('Loading loop2.cjson throws error', function () {
             expect(function () {
                 oconf.load(testFile('loop2.cjson'));
-            }, 'to throw', /^Loop in loaded files:/);
+            }, 'to throw', /^Loop in loaded files/);
         });
     });
     describe('includeNonExistentFile.cjson', function () {
@@ -136,6 +150,241 @@ describe('Basic tests', function () {
             expect(function () {
                 oconf.load(testFile('includeNonExistentFile.cjson'), { ignore: testFile('foo/*cjson') });
             }, 'to throw', /^ENOENT, no such file or directory/);
+        });
+    });
+});
+
+describe('#public behaviour', function () {
+    describe('when loading with public:false (the default)', function () {
+        describe('where the root object contains a #public property', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-base.cjson'));
+            });
+            it('should fold the #public properties down into the base structure', function () {
+                expect(data, 'to equal', {
+                    foo: 'do not expose to public',
+                    what: 'what is public',
+                    '#public': {
+                        what: 'what is public'
+                    }
+                });
+            });
+        });
+
+        describe('where a child object contains some #public properties', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-deep.cjson'));
+            });
+            it('should fold the #public properties down into the base structure', function () {
+                expect(data, 'to equal', {
+                    foo: "do not expose to public",
+                    bar: {
+                        quux: "super secret"
+                    },
+                    hello: {
+                        earth: "mostly harmless",
+                        answer: 42
+                    },
+                    '#public': {
+                        hello: {
+                            answer: 42
+                        }
+                    }
+                });
+            });
+        });
+
+        describe('where a child object in a child array contains some #public properties', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('array-with-object-with-public.cjson'));
+            });
+            it('should fold the #public properties down into the base structure', function () {
+                expect(data, 'to equal', {
+                    foo: [
+                        {
+                            bar: 'quux'
+                        }
+                    ],
+                    '#public': {
+                        foo: [
+                            {
+                                bar: 'quux'
+                            }
+                        ]
+                    }
+                });
+            });
+        });
+
+        describe('where a child object in a child array contains some #public properties', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('array-with-object-with-array-with-object-with-public.cjson'));
+            });
+            it.skip('should fold the #public properties down into the base structure', function () {
+                expect(data, 'to exhaustively satisfy', {
+                    0: {
+                        foo: [
+                            {
+                                bar: 'quux'
+                            }
+                        ]
+                    },
+                    '#public': [{
+                        foo: [
+                            {
+                                bar: 'quux'
+                            }
+                        ]
+                    }]
+                }).and('to be an array');
+            });
+        });
+
+        describe('when trying to overwrite a public property with a property that was declared public at another level', function () {
+            it('should throw an error', function () {
+                expect(function () {
+                    oconf.load(testFile('public-conflict.cjson'));
+                }, 'to throw', /^Unsupported combination of public and non/);
+            });
+        });
+
+        describe('where trying to overwrite a non-public property with a #public one', function () {
+            it('should throw an error', function () {
+                expect(function () {
+                    oconf.load(testFile('public-deep-with-include.cjson'));
+                }, 'to throw', /^Unsupported combination of public and non/);
+            });
+        });
+
+        describe('where trying to overwrite a #public property with a non-public one', function () {
+            it('should throw an error', function () {
+                expect(function () {
+                    oconf.load(testFile('public-deep-with-include.cjson'));
+                }, 'to throw', /^Unsupported combination of public and non/);
+            });
+        });
+
+        describe('where including a file that already has a #public property which we try to overwrite', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-deep-with-public-include.cjson'));
+            });
+            it('should overwrite the included #public property with our value', function () {
+                expect(data, 'to equal', {
+                    foo: "do not expose to public",
+                    bar: {
+                        quux: "super secret"
+                    },
+                    hello: {
+                        earth: "mostly harmless",
+                        answer: 'Insufficient data for meaningful answer'
+                    },
+                    '#public': {
+                        hello: {
+                            answer: 'Insufficient data for meaningful answer'
+                        }
+                    }
+                });
+            });
+        });
+
+        describe('when calling load method with an array of config file names containing public properties', function () {
+            var data, dataInclude;
+            before(function () {
+                data = oconf.load([testFile('public-left.cjson'), testFile('public-right.cjson')]);
+                dataInclude = oconf.load(testFile('public-left-right-wrap.cjson'));
+            });
+            it('functions like calling #include with an array of filenames in the same order', function () {
+                expect(data, 'to equal', dataInclude);
+            });
+        });
+    });
+
+    describe('when loading with public:true', function () {
+        describe('where the root object contains a #public property', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-base.cjson'), { public: true });
+            });
+            it('should fold the #public properties down into the base structure, and omit secret properties and leaves', function () {
+                expect(data, 'to equal', {
+                    what: 'what is public'
+                });
+            });
+        });
+
+        describe('where a child object contains some #public properties', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-deep.cjson'), { public: true });
+            });
+            it('should fold the #public properties down into the base structure, and omit secret properties and leaves', function () {
+                expect(data, 'to equal', {
+                    hello: {
+                        answer: 42
+                    }
+                });
+            });
+        });
+
+        describe('where trying to overwrite a non-public property with a #public one', function () {
+            it('should throw an error', function () {
+                expect(function () {
+                    oconf.load(testFile('public-deep-with-include.cjson'), { public: true });
+                }, 'to throw', /^Unsupported combination of public and non/);
+            });
+        });
+
+        describe('where trying to overwrite a #public property with a non-public one', function () {
+            it('should throw an error', function () {
+                expect(function () {
+                    oconf.load(testFile('public-deep-with-include.cjson'), { public: true });
+                }, 'to throw', /^Unsupported combination of public and non/);
+            });
+        });
+
+        describe('where including a file that overwrites a #public property with another public one', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('public-deep-with-public-include.cjson'), { public: true });
+            });
+            it('should overwrite the included #public property with our value, and omit secret properties and leaves', function () {
+                expect(data, 'to equal', {
+                    hello: {
+                        answer: 'Insufficient data for meaningful answer'
+                    }
+                });
+            });
+        });
+
+        describe('when there are no #public properties at all', function () {
+            var data;
+            before(function () {
+                data = oconf.load(testFile('base.cjson'), { public: true });
+            });
+            it('should return an empty object', function () {
+                expect(data, 'to equal', {});
+            });
+        });
+    });
+
+    describe('with public-array.cjson', function () {
+        it('throws an error', function () {
+            expect(function () {
+                oconf.load(testFile('public-array.cjson'));
+            }, 'to throw', /^\#public must always be an object/);
+        });
+    });
+
+    describe('with public-non-object.cjson', function () {
+        it('throws an error', function () {
+            expect(function () {
+                oconf.load(testFile('public-non-object.cjson'));
+            }, 'to throw', /^\#public must always be an object/);
         });
     });
 });

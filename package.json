@@ -47,6 +47,6 @@
     "jscs": "1.10.0",
     "jshint": "2.5.11",
     "mocha": "*",
-    "unexpected": "7.0.0"
+    "unexpected": "10.8.1"
   }
 }

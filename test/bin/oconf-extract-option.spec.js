@@ -38,7 +38,7 @@ describe('bin/oconf-extract-option', function () {
         exec(pathToBin + ' --allowmissing ' + testFile + ' bar', function (err, stdout, stderr) {
             expect(err, 'to be null');
             expect(stdout, 'to equal', '');
-            expect(stderr, 'to match', '');
+            expect(stderr, 'to equal', '');
             done();
         });
     });
@@ -47,7 +47,7 @@ describe('bin/oconf-extract-option', function () {
         exec(pathToBin + ' ' + testFile + ' foo.bar', function (err, stdout, stderr) {
             expect(err, 'to be null');
             expect(stdout, 'to equal', 'qux\n');
-            expect(stderr, 'to match', '');
+            expect(stderr, 'to equal', '');
             done();
         });
     });

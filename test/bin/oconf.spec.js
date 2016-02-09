@@ -55,6 +55,18 @@ describe('bin/oconf', function () {
                 stderr: ''
             });
         });
+        it('should support including multiple files, and print the resolved json structure to stdout', function () {
+            return expect([testFile('extend-base'), testFile('deep')], 'when passed as arguments to oconf', 'to satisfy', {
+                err: null,
+                stdout: formattedJson({
+                    foo: {
+                        bar: "qux"
+                    },
+                    what: "this is from default.cjson."
+                }),
+                stderr: ''
+            });
+        });
         it('should fail when asked for nonexistant file', function () {
             return expect(testFile('nonExistent'), 'when passed as arguments to oconf', 'to satisfy', {
                 err: expect.it('to be an', Error),
@@ -88,7 +100,7 @@ describe('bin/oconf', function () {
                 err: null,
                 code: 0,
                 stdout: '',
-                stderr: expect.it('to match', /Options:/)
+                stderr: expect.it('to match', /Options/)
             });
         });
     });
@@ -191,19 +203,6 @@ describe('bin/oconf', function () {
                 err: null,
                 stdout: 'qux\n',
                 stderr: ''
-            });
-        });
-    });
-    describe('missing --extract-option flag', function () {
-        it('should return the option value and warn the user', function () {
-            return expect([
-                testFile('base'),
-                'foo'
-            ], 'when passed as arguments to oconf', 'to satisfy', {
-                err: expect.it('to be an', Error),
-                code: 1,
-                stdout: '',
-                stderr: 'Error: Did you forget the --extract-option flag?\n'
             });
         });
     });

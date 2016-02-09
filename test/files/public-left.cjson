@@ -1,0 +1,8 @@
+{
+    "foo": {
+        "bar": "public-left.cjson"
+    },
+    "#public": {
+        "what": "this is from public-left.cjson."
+    }
+}
