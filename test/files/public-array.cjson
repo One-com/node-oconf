@@ -1,10 +1,10 @@
 {
-	"foo": "do not expose to public",
-	"#public": [
-		{
-			"what": {
-				"quux": "what is public"
-			}
-		}
-	]
+    "foo": "do not expose to public",
+    "#public": [
+        {
+            "what": {
+                "quux": "what is public"
+            }
+        }
+    ]
 }

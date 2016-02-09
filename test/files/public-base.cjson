@@ -1,6 +1,6 @@
 {
-	"foo": "do not expose to public",
-	"#public": {
-		"what": "what is public"
-	}
+    "foo": "do not expose to public",
+    "#public": {
+        "what": "what is public"
+    }
 }

@@ -1,4 +1,4 @@
 {
-	"foo": "do not expose to public",
-	"#public": "not an object"
+    "foo": "do not expose to public",
+    "#public": "not an object"
 }
