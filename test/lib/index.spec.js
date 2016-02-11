@@ -438,5 +438,67 @@ describe('#public behaviour', function () {
                 }
             }, 'to result in error', new Error('foo#public clashes with foo inside #public block'));
         });
+
+        it.skip('should allow overwriting a key inside a #public block with a #public-suffixed key of the same name', function () {
+            return expect(function () {
+                expect(oconf.load('/testdata/config.cjson'), 'to equal', {
+                    foo: {
+                        abc: 123
+                    },
+                    '#public': {
+                        foo: {
+                            abc: 123
+                        }
+                    }
+                });
+            }, 'with fs mocked out', {
+                '/testdata': {
+                    'config.cjson': JSON.stringify({
+                        '#include': '/testdata/included.cjson',
+                        foo: {
+                            'abc#public': 123
+                        }
+                    }),
+                    'included.cjson': JSON.stringify({
+                        foo: {
+                            '#public': {
+                                abc: 456
+                            }
+                        }
+                    })
+                }
+            }, 'not to error');
+        });
+
+        it.skip('should allow overwriting a #public-suffixed key with a key of the same name inside a #public block', function () {
+            return expect(function () {
+                expect(oconf.load('/testdata/config.cjson'), 'to equal', {
+                    foo: {
+                        abc: 123
+                    },
+                    '#public': {
+                        foo: {
+                            abc: 123
+                        }
+                    }
+                });
+            }, 'with fs mocked out', {
+                '/testdata': {
+                    'config.cjson': JSON.stringify({
+                        '#include': '/testdata/included.cjson',
+                        foo: {
+                            '#public': {
+                                abc: 123
+                            }
+                        }
+                    }),
+                    'included.cjson': JSON.stringify({
+                        foo: {
+                            'abc#public': 456
+                        }
+                    })
+                }
+            }, 'not to error');
+        });
     });
 });
