@@ -1,5 +1,5 @@
 /*global describe, it, before*/
-var expect = require('unexpected');
+var expect = require('unexpected').clone().use(require('unexpected-fs'));
 var oconf = require('../../lib/index');
 
 function testFile(filename) {
@@ -385,6 +385,58 @@ describe('#public behaviour', function () {
             expect(function () {
                 oconf.load(testFile('public-non-object.cjson'));
             }, 'to throw', /^\#public must always be an object/);
+        });
+    });
+
+    expect.addAssertion('<object> to resolve to <object>', function (expect, subject, value) {
+        return expect(function () {
+            expect(oconf.load('/testdata/config.cjson'), 'to equal', value);
+        }, 'with fs mocked out', {
+            '/testdata': {
+                'config.cjson': JSON.stringify(subject)
+            }
+        }, 'not to error');
+    });
+
+    expect.addAssertion('<object> to result in error <any?>', function (expect, subject, value) {
+        return expect(function () {
+            expect(oconf.load('/testdata/config.cjson'), 'to equal', value);
+        }, 'with fs mocked out', {
+            '/testdata': {
+                'config.cjson': JSON.stringify(subject)
+            }
+        }, 'to error', value);
+    });
+
+    describe('with a #public-suffixed key', function () {
+        it('treats the key as if contained inside a #public block', function () {
+            expect({
+                foo: {
+                    'bar#public': 123,
+                    quux: 456
+                }
+            }, 'to resolve to', {
+                foo: {
+                    bar: 123,
+                    quux: 456
+                },
+                '#public': {
+                    foo: {
+                        bar: 123
+                    }
+                }
+            });
+        });
+
+        it('complains if a #public-suffixed key shadows an entry inside a #public block', function () {
+            expect({
+                foo: {
+                    '#public': {
+                        foo: 123
+                    },
+                    'foo#public': 456
+                }
+            }, 'to result in error', new Error('foo#public clashes with foo inside #public block'));
         });
     });
 });
