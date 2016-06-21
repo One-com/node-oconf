@@ -1,7 +1,5 @@
 #!/usr/bin/env node
-
 var oconf = require('../lib/index');
-var util = require('util');
 
 var argp = require('optimist')
     .usage('Usage: $0 [--lint|--extract-option <option> [--allow-missing-option][--option-as-json]] <file>')
@@ -131,7 +129,7 @@ if (argv['extract-option']) {
             data = JSON.stringify(data, false, 4);
         }
 
-        util.puts(data);
+        console.log(data);
     } catch (error) {
         if (!argv['allow-missing-option']) {
             console.error("Error:", error.message);
@@ -139,5 +137,5 @@ if (argv['extract-option']) {
         }
     }
 } else {
-    util.puts(JSON.stringify(config, false, 4));
+    console.log(JSON.stringify(config, false, 4));
 }
