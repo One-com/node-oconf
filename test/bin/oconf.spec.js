@@ -70,13 +70,13 @@ describe('bin/oconf', function () {
         it('should fail when asked for nonexistant file', function () {
             return expect(testFile('nonExistent'), 'when passed as arguments to oconf', 'to satisfy', {
                 err: expect.it('to be an', Error),
-                stderr: expect.it('to match', /Error: ENOENT, no such file or directory/)
+                stderr: expect.it('to match', /ENOENT/)
             });
         });
         it('should fail when resolved file includes non existing file', function () {
             return expect(testFile('includeNonExistentFile'), 'when passed as arguments to oconf', 'to satisfy', {
                 err: expect.it('to be an', Error),
-                stderr: expect.it('to match', /Error: ENOENT, no such file or directory/)
+                stderr: expect.it('to match', /ENOENT/)
                     .and('to match', /nonExistentFile.cjson/)
             });
         });

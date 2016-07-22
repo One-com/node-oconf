@@ -117,7 +117,7 @@ describe('#include behaviour', function () {
         it('should throw an error when nonExistentFile.cjson is not ignored', function () {
             expect(function () {
                 oconf.load(testFile('includeNonExistentFile.cjson'));
-            }, 'to throw', /^ENOENT, no such file or directory/);
+            }, 'to throw', /^ENOENT/);
         });
         it('should not throw an error when nonExistentFile.cjson is ignored', function () {
             expect(function () {
@@ -149,7 +149,7 @@ describe('#include behaviour', function () {
         it('should throw an error when ignoring by glob but including file not matched by glob', function () {
             expect(function () {
                 oconf.load(testFile('includeNonExistentFile.cjson'), { ignore: testFile('foo/*cjson') });
-            }, 'to throw', /^ENOENT, no such file or directory/);
+            }, 'to throw', /^ENOENT/);
         });
     });
 });
