@@ -113,6 +113,34 @@ describe('#include behaviour', function () {
             }, 'to throw', /^Loop in loaded files/);
         });
     });
+
+    it('should support the same file being included multiple times when there are no loops', function () {
+        return expect(function () {
+            expect(oconf.load('/testdata/config.cjson'), 'to equal', {
+                foo: {
+                    abc: 123
+                },
+                bar: {
+                    abc: 123
+                }
+            });
+        }, 'with fs mocked out', {
+            '/testdata': {
+                'config.cjson': JSON.stringify({
+                    foo: {
+                        '#include': '/testdata/nonloopy.cjson'
+                    },
+                    bar: {
+                        '#include': '/testdata/nonloopy.cjson'
+                    }
+                }),
+                'nonloopy.cjson': JSON.stringify({
+                    abc: 123
+                })
+            }
+        }, 'not to error');
+    });
+
     describe('includeNonExistentFile.cjson', function () {
         it('should throw an error when nonExistentFile.cjson is not ignored', function () {
             expect(function () {
