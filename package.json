@@ -47,7 +47,7 @@
     "jscs": "1.10.0",
     "jshint": "2.5.11",
     "mocha": "*",
-    "unexpected": "10.8.1",
-    "unexpected-fs": "2.1.3"
+    "unexpected": "10.15.0",
+    "unexpected-fs": "2.4.0"
   }
 }
