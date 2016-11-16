@@ -1,5 +1,6 @@
 /*global describe, it, before*/
-var expect = require('unexpected').clone().use(require('unexpected-fs'));
+var expect = require('unexpected').clone();
+var fileception = require('fileception');
 var oconf = require('../../lib/index');
 
 function testFile(filename) {
@@ -115,16 +116,7 @@ describe('#include behaviour', function () {
     });
 
     it('should support the same file being included multiple times when there are no loops', function () {
-        return expect(function () {
-            expect(oconf.load('/testdata/config.cjson'), 'to equal', {
-                foo: {
-                    abc: 123
-                },
-                bar: {
-                    abc: 123
-                }
-            });
-        }, 'with fs mocked out', {
+        fileception({
             '/testdata': {
                 'config.cjson': JSON.stringify({
                     foo: {
@@ -138,7 +130,16 @@ describe('#include behaviour', function () {
                     abc: 123
                 })
             }
-        }, 'not to error');
+        });
+
+        expect(oconf.load('/testdata/config.cjson'), 'to equal', {
+            foo: {
+                abc: 123
+            },
+            bar: {
+                abc: 123
+            }
+        });
     });
 
     describe('includeNonExistentFile.cjson', function () {
@@ -417,22 +418,24 @@ describe('#public behaviour', function () {
     });
 
     expect.addAssertion('<object> to resolve to <object>', function (expect, subject, value) {
-        return expect(function () {
-            expect(oconf.load('/testdata/config.cjson'), 'to equal', value);
-        }, 'with fs mocked out', {
+        fileception({
             '/testdata': {
                 'config.cjson': JSON.stringify(subject)
             }
-        }, 'not to error');
+        });
+
+        expect(oconf.load('/testdata/config.cjson'), 'to equal', value);
     });
 
     expect.addAssertion('<object> to result in error <any?>', function (expect, subject, value) {
-        return expect(function () {
-            expect(oconf.load('/testdata/config.cjson'), 'to equal', value);
-        }, 'with fs mocked out', {
+        fileception({
             '/testdata': {
                 'config.cjson': JSON.stringify(subject)
             }
+        });
+
+        return expect(function () {
+            expect(oconf.load('/testdata/config.cjson'), 'to equal', value);
         }, 'to error', value);
     });
 
@@ -468,18 +471,7 @@ describe('#public behaviour', function () {
         });
 
         it.skip('should allow overwriting a key inside a #public block with a #public-suffixed key of the same name', function () {
-            return expect(function () {
-                expect(oconf.load('/testdata/config.cjson'), 'to equal', {
-                    foo: {
-                        abc: 123
-                    },
-                    '#public': {
-                        foo: {
-                            abc: 123
-                        }
-                    }
-                });
-            }, 'with fs mocked out', {
+            fileception({
                 '/testdata': {
                     'config.cjson': JSON.stringify({
                         '#include': '/testdata/included.cjson',
@@ -495,22 +487,22 @@ describe('#public behaviour', function () {
                         }
                     })
                 }
-            }, 'not to error');
+            });
+
+            expect(oconf.load('/testdata/config.cjson'), 'to equal', {
+                foo: {
+                    abc: 123
+                },
+                '#public': {
+                    foo: {
+                        abc: 123
+                    }
+                }
+            });
         });
 
         it.skip('should allow overwriting a #public-suffixed key with a key of the same name inside a #public block', function () {
-            return expect(function () {
-                expect(oconf.load('/testdata/config.cjson'), 'to equal', {
-                    foo: {
-                        abc: 123
-                    },
-                    '#public': {
-                        foo: {
-                            abc: 123
-                        }
-                    }
-                });
-            }, 'with fs mocked out', {
+            fileception({
                 '/testdata': {
                     'config.cjson': JSON.stringify({
                         '#include': '/testdata/included.cjson',
@@ -526,7 +518,18 @@ describe('#public behaviour', function () {
                         }
                     })
                 }
-            }, 'not to error');
+            });
+
+            expect(oconf.load('/testdata/config.cjson'), 'to equal', {
+                foo: {
+                    abc: 123
+                },
+                '#public': {
+                    foo: {
+                        abc: 123
+                    }
+                }
+            });
         });
     });
 });
