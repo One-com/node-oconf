@@ -43,11 +43,11 @@
   },
   "devDependencies": {
     "coveralls": "2.11.2",
+    "fileception": "0.1.0",
     "istanbul": "0.3.5",
     "jscs": "1.10.0",
     "jshint": "2.5.11",
     "mocha": "*",
-    "unexpected": "10.15.0",
-    "unexpected-fs": "2.4.0"
+    "unexpected": "10.15.0"
   }
 }
