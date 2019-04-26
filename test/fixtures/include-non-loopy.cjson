@@ -1,0 +1,8 @@
+{
+  "foo": {
+    "#include": "non-loopy.cjson"
+  },
+  "bar": {
+    "#include": "non-loopy.cjson"
+  }
+}

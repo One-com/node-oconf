@@ -1,10 +1,10 @@
 /*global describe, it, before*/
+var pathModule = require('path');
 var expect = require('unexpected').clone();
-var fileception = require('fileception');
 var oconf = require('../../lib/index');
 
 function testFile(filename) {
-    return require('path').resolve(__dirname, '..', 'files', filename);
+    return pathModule.resolve(__dirname, '..', 'files', filename);
 }
 
 describe('Basic tests', function () {
@@ -116,30 +116,23 @@ describe('#include behaviour', function () {
     });
 
     it('should support the same file being included multiple times when there are no loops', function () {
-        fileception({
-            '/testdata': {
-                'config.cjson': JSON.stringify({
-                    foo: {
-                        '#include': '/testdata/nonloopy.cjson'
-                    },
-                    bar: {
-                        '#include': '/testdata/nonloopy.cjson'
-                    }
-                }),
-                'nonloopy.cjson': JSON.stringify({
+        expect(
+            oconf.load(
+                pathModule.resolve(
+                    __dirname,
+                    '../fixtures/include-non-loopy.cjson'
+                )
+            ),
+            'to equal',
+            {
+                foo: {
                     abc: 123
-                })
+                },
+                bar: {
+                    abc: 123
+                }
             }
-        });
-
-        expect(oconf.load('/testdata/config.cjson'), 'to equal', {
-            foo: {
-                abc: 123
-            },
-            bar: {
-                abc: 123
-            }
-        });
+        );
     });
 
     describe('includeNonExistentFile.cjson', function () {
@@ -208,12 +201,12 @@ describe('#public behaviour', function () {
             });
             it('should fold the #public properties down into the base structure', function () {
                 expect(data, 'to equal', {
-                    foo: "do not expose to public",
+                    foo: 'do not expose to public',
                     bar: {
-                        quux: "super secret"
+                        quux: 'super secret'
                     },
                     hello: {
-                        earth: "mostly harmless",
+                        earth: 'mostly harmless',
                         answer: 42
                     },
                     '#public': {
@@ -304,12 +297,12 @@ describe('#public behaviour', function () {
             });
             it('should overwrite the included #public property with our value', function () {
                 expect(data, 'to equal', {
-                    foo: "do not expose to public",
+                    foo: 'do not expose to public',
                     bar: {
-                        quux: "super secret"
+                        quux: 'super secret'
                     },
                     hello: {
-                        earth: "mostly harmless",
+                        earth: 'mostly harmless',
                         answer: 'Insufficient data for meaningful answer'
                     },
                     '#public': {
@@ -405,7 +398,7 @@ describe('#public behaviour', function () {
         it('throws an error', function () {
             expect(function () {
                 oconf.load(testFile('public-array.cjson'));
-            }, 'to throw', /^\#public must always be an object/);
+            }, 'to throw', /^#public must always be an object/);
         });
     });
 
@@ -413,123 +406,91 @@ describe('#public behaviour', function () {
         it('throws an error', function () {
             expect(function () {
                 oconf.load(testFile('public-non-object.cjson'));
-            }, 'to throw', /^\#public must always be an object/);
+            }, 'to throw', /^#public must always be an object/);
         });
-    });
-
-    expect.addAssertion('<object> to resolve to <object>', function (expect, subject, value) {
-        fileception({
-            '/testdata': {
-                'config.cjson': JSON.stringify(subject)
-            }
-        });
-
-        expect(oconf.load('/testdata/config.cjson'), 'to equal', value);
-    });
-
-    expect.addAssertion('<object> to result in error <any?>', function (expect, subject, value) {
-        fileception({
-            '/testdata': {
-                'config.cjson': JSON.stringify(subject)
-            }
-        });
-
-        return expect(function () {
-            expect(oconf.load('/testdata/config.cjson'), 'to equal', value);
-        }, 'to error', value);
     });
 
     describe('with a #public-suffixed key', function () {
         it('treats the key as if contained inside a #public block', function () {
-            expect({
-                foo: {
-                    'bar#public': 123,
-                    quux: 456
-                }
-            }, 'to resolve to', {
-                foo: {
-                    bar: 123,
-                    quux: 456
-                },
-                '#public': {
+            expect(
+                oconf.load(
+                    pathModule.resolve(
+                        __dirname,
+                        '../fixtures/valid-public.cjson'
+                    )
+                ),
+                'to equal',
+                {
                     foo: {
-                        bar: 123
+                        bar: 123,
+                        quux: 456
+                    },
+                    '#public': {
+                        foo: {
+                            bar: 123
+                        }
                     }
                 }
-            });
+            );
         });
 
         it('complains if a #public-suffixed key shadows an entry inside a #public block', function () {
-            expect({
-                foo: {
-                    '#public': {
-                        foo: 123
-                    },
-                    'foo#public': 456
-                }
-            }, 'to result in error', new Error('foo#public clashes with foo inside #public block'));
+            expect(
+                function () {
+                    oconf.load(
+                        pathModule.resolve(
+                            __dirname,
+                            '../fixtures/invalid-public.cjson'
+                        )
+                    );
+                },
+                'to throw',
+                new Error('foo#public clashes with foo inside #public block')
+            );
         });
 
         it.skip('should allow overwriting a key inside a #public block with a #public-suffixed key of the same name', function () {
-            fileception({
-                '/testdata': {
-                    'config.cjson': JSON.stringify({
-                        '#include': '/testdata/included.cjson',
-                        foo: {
-                            'abc#public': 123
-                        }
-                    }),
-                    'included.cjson': JSON.stringify({
-                        foo: {
-                            '#public': {
-                                abc: 456
-                            }
-                        }
-                    })
-                }
-            });
-
-            expect(oconf.load('/testdata/config.cjson'), 'to equal', {
-                foo: {
-                    abc: 123
-                },
-                '#public': {
+            expect(
+                oconf.load(
+                    pathModule.resolve(
+                        __dirname,
+                        '../fixtures/public-key-include-public-block.cjson'
+                    )
+                ),
+                'to equal',
+                {
                     foo: {
                         abc: 123
+                    },
+                    '#public': {
+                        foo: {
+                            abc: 123
+                        }
                     }
                 }
-            });
+            );
         });
 
         it.skip('should allow overwriting a #public-suffixed key with a key of the same name inside a #public block', function () {
-            fileception({
-                '/testdata': {
-                    'config.cjson': JSON.stringify({
-                        '#include': '/testdata/included.cjson',
-                        foo: {
-                            '#public': {
-                                abc: 123
-                            }
-                        }
-                    }),
-                    'included.cjson': JSON.stringify({
-                        foo: {
-                            'abc#public': 456
-                        }
-                    })
-                }
-            });
-
-            expect(oconf.load('/testdata/config.cjson'), 'to equal', {
-                foo: {
-                    abc: 123
-                },
-                '#public': {
+            expect(
+                oconf.load(
+                    pathModule.resolve(
+                        __dirname,
+                        '../fixtures/public-block-include-public-key.cjson'
+                    )
+                ),
+                'to equal',
+                {
                     foo: {
                         abc: 123
+                    },
+                    '#public': {
+                        foo: {
+                            abc: 123
+                        }
                     }
                 }
-            });
+            );
         });
     });
 });

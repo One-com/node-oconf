@@ -15,7 +15,7 @@ function testFile(fileName) {
     return require('path').resolve(__dirname, '..', 'files', fileName);
 }
 
-expect.addAssertion('when passed as arguments to oconf', function (expect, subject, value) {
+expect.addAssertion('when passed as arguments to oconf', function (expect, subject) {
     this.errorMode = 'nested';
     var that = this;
     return expect.promise(function (resolve, reject) {
@@ -49,8 +49,8 @@ describe('bin/oconf', function () {
             return expect(testFile('base'), 'when passed as arguments to oconf', 'to satisfy', {
                 err: null,
                 stdout: formattedJson({
-                    foo: "overwrite this",
-                    what: "this is from default.cjson."
+                    foo: 'overwrite this',
+                    what: 'this is from default.cjson.'
                 }),
                 stderr: ''
             });
@@ -60,9 +60,9 @@ describe('bin/oconf', function () {
                 err: null,
                 stdout: formattedJson({
                     foo: {
-                        bar: "qux"
+                        bar: 'qux'
                     },
-                    what: "this is from default.cjson."
+                    what: 'this is from default.cjson.'
                 }),
                 stderr: ''
             });
@@ -127,7 +127,7 @@ describe('bin/oconf', function () {
                     'Error: Parse error on line 2:',
                     '{    "foo": "bar}',
                     '------------^',
-                    "Expecting 'STRING', 'NUMBER', 'NULL', 'TRUE', 'FALSE', '{', '[', got 'undefined'",
+                    'Expecting \'STRING\', \'NUMBER\', \'NULL\', \'TRUE\', \'FALSE\', \'{\', \'[\', got \'undefined\'',
                     'File: "' + filePath + '"',
                     ''
                 ].join('\n')
