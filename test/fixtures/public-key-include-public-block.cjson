@@ -1,0 +1,6 @@
+{
+  "#include": "public-block.cjson",
+  "foo": {
+      "abc#public": 123
+  }
+}

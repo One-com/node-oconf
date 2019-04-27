@@ -1,0 +1,8 @@
+{
+  "foo": {
+    "#public": {
+      "foo": 123
+    },
+    "foo#public": 456
+  }
+}

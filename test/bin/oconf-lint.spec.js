@@ -4,7 +4,7 @@ var expect = require('unexpected');
 
 var pathToBin = require('path').resolve(__dirname, '../../bin/', 'oconf-lint');
 
-expect.addAssertion('when oconf-linted', function (expect, subject, value) {
+expect.addAssertion('when oconf-linted', function (expect, subject) {
     this.errorMode = 'nested';
     var that = this;
     return expect.promise(function (resolve, reject) {
@@ -58,7 +58,7 @@ describe('bin/oconf-lint', function () {
                 'Error: Parse error on line 2:',
                 '{    "foo": "bar}',
                 '------------^',
-                "Expecting 'STRING', 'NUMBER', 'NULL', 'TRUE', 'FALSE', '{', '[', got 'undefined'",
+                'Expecting \'STRING\', \'NUMBER\', \'NULL\', \'TRUE\', \'FALSE\', \'{\', \'[\', got \'undefined\'',
                 'File: "' + filePath + '"',
                 ''
             ].join('\n')

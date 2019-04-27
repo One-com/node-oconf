@@ -1,0 +1,8 @@
+{
+  "#include": "/testdata/included.cjson",
+  "foo": {
+    "#public": {
+      "abc": 123
+    }
+  }
+}
