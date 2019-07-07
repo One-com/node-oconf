@@ -18,6 +18,11 @@ var argp = require('optimist')
         description: 'Lint the input file and report any errors.',
         type: 'boolean'
     })
+    .option('relaxed', {
+        alias: 'r',
+        description: 'Use relaxed JSON format.',
+        type: 'boolean'
+    })
     .option('extract-option', {
         alias: 'o',
         description: 'Extract the value of an option.',
@@ -106,7 +111,7 @@ function _getKey(keyname, testObj) {
 var config;
 
 try {
-    config = oconf.load(argv._, { ignore: argv.ignore, public: argv.public });
+    config = oconf.load(argv._, { ignore: argv.ignore, public: argv.public, relaxed: argv.relaxed });
 } catch (error) {
     console.error("Error:", error.message);
     process.exit(1);

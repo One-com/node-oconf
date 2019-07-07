@@ -1,0 +1,7 @@
+/*
+ * Example rjson file.
+ */
+{
+	foo: "bar",
+	"#include": "./base.cjson"
+}
