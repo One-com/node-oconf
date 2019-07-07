@@ -189,6 +189,34 @@ You can also filter out values in the `#public` blob with the `--public` flag.
 }
 ```
 
+## Support for relaxed JSON format
+**Reference:** https://www.npmjs.com/package/relaxed-json
+
+```js
+// Contents of config.rjson
+{
+  someConfig: 'someValue'
+}
+```
+
+### In terminal:
+```sh
+ $ oconf --relaxed config.rjson
+{
+    "someConfig": "someValue"
+}
+```
+
+In Node JS:
+```js
+var oconf = require('oconf');
+var data = oconf.load('config.rjson', { relaxed: true });
+console.log(JSON.stringify(data));
+
+// Output:
+{"someConfig": "someValue"}
+```
+
 ## Tests
 
 Download/clone, run `npm install` and then `npm test`.
