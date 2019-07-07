@@ -39,6 +39,7 @@
     "minimatch": "^3.0.4",
     "optimist": "0.6.1",
     "passerror": "1.1.0",
+    "relaxed-json": "1.0.3",
     "underscore": "*"
   },
   "devDependencies": {

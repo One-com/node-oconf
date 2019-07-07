@@ -9,7 +9,7 @@ function formattedJson(obj) {
 }
 
 function testFile(fileName) {
-    if (!(/\.cjson$/.test(fileName))) {
+    if (!(/\.cjson$/.test(fileName)) && !(/\.rjson$/.test(fileName))) {
         fileName += '.cjson';
     }
     return require('path').resolve(__dirname, '..', 'files', fileName);
@@ -65,6 +65,24 @@ describe('bin/oconf', function () {
                     what: 'this is from default.cjson.'
                 }),
                 stderr: ''
+            });
+        });
+        describe('--relaxed flag', function () {
+            it('should support including multiple files (including relaxed json format), and print the resolved json structure to stdout', function () {
+                return expect([
+                    '--relaxed',
+                    testFile('extend-base.rjson'),
+                    testFile('deep')
+                ], 'when passed as arguments to oconf', 'to satisfy', {
+                    err: null,
+                    stdout: formattedJson({
+                        foo: {
+                            bar: 'qux'
+                        },
+                        what: 'this is from default.cjson.'
+                    }),
+                    stderr: ''
+                });
             });
         });
         it('should fail when asked for nonexistant file', function () {
