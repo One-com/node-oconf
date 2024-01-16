@@ -142,10 +142,9 @@ describe('bin/oconf', function () {
                 err: expect.it('to be an', Error),
                 stdout: '',
                 stderr: [
-                    'Error: Parse error on line 2:',
-                    '{    "foo": "bar}',
-                    '------------^',
-                    'Expecting \'STRING\', \'NUMBER\', \'NULL\', \'TRUE\', \'FALSE\', \'{\', \'[\', got \'undefined\'',
+                    'Error: Unexpected token \'}\' at 2:17',
+                    '    "foo": "bar',
+                    '               ^',
                     'File: "' + filePath + '"',
                     ''
                 ].join('\n')
