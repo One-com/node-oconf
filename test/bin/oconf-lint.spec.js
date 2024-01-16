@@ -55,10 +55,9 @@ describe('bin/oconf-lint', function () {
             code: 1,
             stdout: '',
             stderr: [
-                'Error: Parse error on line 2:',
-                '{    "foo": "bar}',
-                '------------^',
-                'Expecting \'STRING\', \'NUMBER\', \'NULL\', \'TRUE\', \'FALSE\', \'{\', \'[\', got \'undefined\'',
+                'Error: Unexpected token \'}\' at 2:17',
+                '    "foo": "bar',
+                '               ^',
                 'File: "' + filePath + '"',
                 ''
             ].join('\n')

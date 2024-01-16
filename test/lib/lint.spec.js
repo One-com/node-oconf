@@ -33,7 +33,7 @@ describe('lib/lint', function () {
     });
     it('should complain when given an invalid file', function (done) {
         lint(testData('invalid.cjson'), function (err) {
-            expect(err, 'to be an error', /^Parse error on line 2:/);
+            expect(err, 'to be an error', /^Unexpected token '.' at 2:/);
             done();
         });
     });
@@ -47,7 +47,7 @@ describe('lib/lint', function () {
         it('should complain if at least one file is invalid', function (done) {
             lint(testData('invalidDirectory'), function (err) {
                 expect(err, 'to satisfy', {
-                    message: /^Parse error on line 2:/,
+                    message: /^Unexpected token '.' at 2:/,
                     file: /invalidDirectory\/2.cjson$/
                 });
                 done();
