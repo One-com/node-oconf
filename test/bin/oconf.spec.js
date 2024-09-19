@@ -1,6 +1,5 @@
 /* global describe, it */
 var exec = require('child_process').exec;
-const { stdout } = require('process');
 var expect = require('unexpected');
 
 var pathToBin = require('path').resolve(__dirname, '../../bin/', 'oconf');
@@ -273,8 +272,7 @@ describe('bin/oconf', function () {
                 '--lint',
                 '--allow-missing-option'
             ], 'when passed as arguments to oconf', 'to satisfy', {
-                code: 0,
-                stdout: /Usage:/,
+                code: 1,
                 stderr: /^The flag --allow-missing-option does not make sense/
             });
         });
@@ -284,8 +282,7 @@ describe('bin/oconf', function () {
                 '--lint',
                 '--option-as-json'
             ], 'when passed as arguments to oconf', 'to satisfy', {
-                code: 0,
-                stdout: /Usage:/,
+                code: 1,
                 stderr: /^The flag --option-as-json does not make sense/
             });
         });
@@ -294,8 +291,7 @@ describe('bin/oconf', function () {
                 'foo.cjson',
                 '--option-as-json'
             ], 'when passed as arguments to oconf', 'to satisfy', {
-                code: 0,
-                stdout: /Usage:/,
+                code: 1,
                 stderr: /^The flag --option-as-json does not make sense/
             });
         });

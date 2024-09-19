@@ -24,7 +24,7 @@ argv._ = program.args;
 // This is needed as optimist will not force exit when --help is
 // passed on it's own, and we want it to.
 if (argv.help || argv._.length < 1) {
-    program.help();
+    program.outputHelp();
     process.exit(0);
 }
 
@@ -45,8 +45,9 @@ if (!argv['extractOption'] && (argv['optionAsJson'] || argv['allowMissingOption'
     } else if (argv['allowMissingOption']) {
         console.error('The flag --allow-missing-option does not make sense without the --extract-option flag.');
     }
-
-    program.help();
+    
+    console.error('');
+    program.outputHelp();
     process.exit(1);
 }
 
