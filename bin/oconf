@@ -46,8 +46,7 @@ if (!argv['extractOption'] && (argv['optionAsJson'] || argv['allowMissingOption'
         console.error('The flag --allow-missing-option does not make sense without the --extract-option flag.');
     }
 
-    // console.error('');
-    // console.error(program.help());
+    program.help();
     process.exit(1);
 }
 
