@@ -5,7 +5,7 @@ const program = new Command();
 
 program
     .name('oconf')
-    .usage('[--lint|--extractOption <option> [--allowMissingOption][--optionAsJson]] <file>')
+    .usage('[--lint|--extract-option <option> [--allow-missing-option][--option-as-json]] <file>')
     .option('-h, --help', 'This help text.')
     .option('-i, --ignore <path>', 'Absolute path or glob pattern for ignoring included files.')
     .option('-l, --lint', 'Lint the input file and report any errors.')
