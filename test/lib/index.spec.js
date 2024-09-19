@@ -246,7 +246,7 @@ describe('#public behaviour', function () {
             before(function () {
                 data = oconf.load(testFile('array-with-object-with-array-with-object-with-public.cjson'));
             });
-            it.skip('should fold the #public properties down into the base structure', function () {
+            it('should fold the #public properties down into the base structure', function () {
                 expect(data, 'to exhaustively satisfy', {
                     0: {
                         foo: [

@@ -117,8 +117,8 @@ describe('bin/oconf', function () {
             return expect('--help', 'when passed as arguments to oconf', 'to satisfy', {
                 err: null,
                 code: 0,
-                stdout: '',
-                stderr: expect.it('to match', /Options/)
+                stdout: expect.it('to match', /Options/),
+                stderr: ''
             });
         });
     });
