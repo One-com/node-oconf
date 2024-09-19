@@ -1,57 +1,30 @@
 #!/usr/bin/env node
-var oconf = require('../lib/index');
+const oconf = require('../lib/index');
+const { Command } = require('commander');
+const program = new Command();
 
-var argp = require('optimist')
-    .usage('Usage: $0 [--lint|--extract-option <option> [--allow-missing-option][--option-as-json]] <file>')
-    .option('help', {
-        alias: 'h',
-        description: 'This help text.',
-        type: 'boolean'
-    })
-    .option('ignore', {
-        alias: 'i',
-        description: 'Absolute path or glob pattern for ignoring included files.',
-        type: 'string'
-    })
-    .option('lint', {
-        alias: 'l',
-        description: 'Lint the input file and report any errors.',
-        type: 'boolean'
-    })
-    .option('relaxed', {
-        alias: 'r',
-        description: 'Use relaxed JSON format.',
-        type: 'boolean'
-    })
-    .option('extract-option', {
-        alias: 'o',
-        description: 'Extract the value of an option.',
-        type: 'string'
-	})
-    .option('option-as-json', {
-        alias: 'j',
-        description: 'The extracted value will be extracted as JSON.',
-        type: 'boolean'
-    })
-    .option('public', {
-        alias: 'p',
-        description: 'Only values in #public objects will be extracted.',
-        type: 'boolean'
-    })
-    .option('json', { type: 'boolean' })
-    .option('allow-missing-option', {
-        alias: 'm',
-        description: 'Do not fail when no such value is present.',
-        type: 'boolean'
-    })
-    .option('allowmissing', { type: 'boolean' });
+program
+    .name('oconf')
+    .usage('[--lint|--extractOption <option> [--allowMissingOption][--optionAsJson]] <file>')
+    .option('-h, --help', 'This help text.')
+    .option('-i, --ignore <path>', 'Absolute path or glob pattern for ignoring included files.')
+    .option('-l, --lint', 'Lint the input file and report any errors.')
+    .option('-r, --relaxed', 'Use relaxed JSON format.')
+    .option('-p, --public', 'Only values in #public objects will be extracted.')
+    .option('-o, --extract-option <option>', 'Extract the value of an option.')
+    .option('-j, --option-as-json', 'The extracted value will be extracted as JSON.')
+    .option('-m, --allow-missing-option', 'Do not fail when no such value is present.')
+    .option('--json', 'JSON output.')
+    .option('--allowmissing', 'Allow missing options.')
+    .parse();
 
-var argv = argp.argv;
+const argv = program.opts();
+argv._ = program.args;
 
 // This is needed as optimist will not force exit when --help is
 // passed on it's own, and we want it to.
 if (argv.help || argv._.length < 1) {
-    argp.showHelp();
+    program.help();
     process.exit(0);
 }
 
@@ -59,22 +32,22 @@ if (argv.help || argv._.length < 1) {
 // This is here for backwards compatibility. Used to be an okay
 // flag. We can add a deprecation warning later.
 if (argv['json']) {
-    argv['option-as-json'] = true;
+    argv['optionAsJson'] = true;
 }
 if (argv['allowmissing']) {
-    argv['allow-missing-option'] = true;
+    argv['allowMissingOption'] = true;
 }
 //////////////////////////////////////////////////////////////////
 
-if (!argv['extract-option'] && (argv['option-as-json'] || argv['allow-missing-option'])) {
-    if (argv['option-as-json']) {
+if (!argv['extractOption'] && (argv['optionAsJson'] || argv['allowMissingOption'])) {
+    if (argv['optionAsJson']) {
         console.error('The flag --option-as-json does not make sense without the --extract-option flag.');
-    } else if (argv['allow-missing-option']) {
+    } else if (argv['allowMissingOption']) {
         console.error('The flag --allow-missing-option does not make sense without the --extract-option flag.');
     }
 
-    console.error('');
-    argp.showHelp();
+    // console.error('');
+    // console.error(program.help());
     process.exit(1);
 }
 
@@ -89,11 +62,11 @@ function _getKey(keyname, testObj) {
         return {error: 'Not found'};
     }
 
-    var key = keyname.shift();
+    const key = keyname.shift();
 
     // Is it an object -- and does it have the key
     if (testObj !== new Object(testObj) || !(key in testObj)) {
-        if (argv['allow-missing-option']) {
+        if (argv['allowMissingOption']) {
             process.exit(0);
         }
         throw new Error('Key ' + key + ' not found in ' + JSON.stringify(testObj));
@@ -108,7 +81,7 @@ function _getKey(keyname, testObj) {
     return testObj[key];
 }
 
-var config;
+let config;
 
 try {
     config = oconf.load(argv._, { ignore: argv.ignore, public: argv.public, relaxed: argv.relaxed });
@@ -122,21 +95,21 @@ if (argv.lint) {
     process.exit(0);
 }
 
-if (argv['extract-option']) {
+if (argv['extractOption']) {
     try {
-        var data = config;
+        let data = config;
 
-        data = _getKey(argv['extract-option'], data);
+        data = _getKey(argv['extractOption'], data);
 
-        if (!argv['option-as-json'] && Array.isArray(data)) {
+        if (!argv['optionAsJson'] && Array.isArray(data)) {
             data = data.join(' ');
-        } else if (argv['option-as-json'] || (typeof data !== 'string' && typeof data !== 'number')) {
+        } else if (argv['optionAsJson'] || (typeof data !== 'string' && typeof data !== 'number')) {
             data = JSON.stringify(data, false, 4);
         }
 
         console.log(data);
     } catch (error) {
-        if (!argv['allow-missing-option']) {
+        if (!argv['allowMissingOption']) {
             console.error("Error:", error.message);
             process.exit(1);
         }
