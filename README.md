@@ -59,7 +59,7 @@ structure like this is used:
  * `project/config/default.cjson` has project-wide defaults.
  * `project/config/{dev,test,staging,production}.cjson` inherits the default
    and set keys relevant to respective environments
- * `project/config/$HOSTNAME.cjson` (optinal) machine-specifics that inherit
+ * `project/config/$HOSTNAME.cjson` (optional) machine-specifics that inherit
    from the relevant environment-file.
  * `/etc/$WORKNAME/$PROJECTNAME-secrets.cjson` inherits the machine-specific
    things and typically adds production secrets.
