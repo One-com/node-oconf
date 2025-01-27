@@ -13,6 +13,7 @@
   ],
   "homepage": "https://github.com/One-com/node-oconf",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "keywords": [
     "cjson",
     "config",
